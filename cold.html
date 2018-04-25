@@ -13,19 +13,19 @@
     <label>Representative Address:: <input type="text" id="userRepresentative" /></label>
     <label>Resulting Balance: <input type="text" id="userBalance" /></label>
     <label>Destination: <input type="text" id="userDestination" /></label>
-    <input type="submit" onclick="createBlock()" />
+    <input type="submit" onclick="genBlock()" />
 </form>
 
 <script>
-async function createBlock() {
+async function genBlock() {
     var x = document.getElementById("userPrivate").value;
     var data = new Object();
-    data.work = document.getElementById("userPOW").value;
+    data.work = String(document.getElementById("userPOW").value);
     data.previous = document.getElementById("userPrevious").value;
     data.representative = document.getElementById("userRepresentative").value;
     data.balance = document.getElementById("userBalance").value;
     data.link = document.getElementById("userDestination").value;
-    userBlock = await nanocurrency.createStateBlock(x.value);
+    userBlock = await nanocurrency.createStateBlock(x, data);
     console.log(userBlock, data);
 }
 </script>
