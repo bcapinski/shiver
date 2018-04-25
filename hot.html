@@ -15,20 +15,16 @@
 
 <body>
 <h2>Hot Wallet:</h2>
-<p>To generate a state block you need six things: your Private Key (sometimes reffered to as SecretKey), some Proof of Work, the previous transaction's hash (Frontier), your Representative, the balance AFTER you send your amount, and the destination address. These tools will help you find some of them. Then, just use your priavate key to generate a block.</p>
+<p>To generate a state block you need six things: your Private Key (sometimes reffered to as SecretKey), some Proof of Work, the previous transaction's hash (Frontier), your Representative, the balance AFTER you send your amount, and the destination address. These tools will help you find them. Then, just use your private key to generate a block with your Cold Wallet.</p>
+
 <form onsubmit="return false;">
-    <h4>Generate Address from Public Key:</h4>
-    <label>Public Key: <input type="text" id="userPublic" /></label><br />
-    <input type="submit" onclick="genAddress()" />
+    <h4>Generate Information:</h4>
+    <label>Previous Block Hash (Frontier): <input type="text" id="userFrontier" /></label><br />
+    <input type="submit" onclick="genInfo()" />
 </form>
 
 <script>
-async function genBlock() {
-    var x = document.getElementById("userPrivate").value;
-    userBlock = await nanocurrency.createStateBlock(x, data);
-    document.getElementById("model-code").innerHTML = JSON.stringify(userBlock);
-    modal.style.display = "block";
-}
+nanocurrency.init()
 var modal = document.getElementById('output');
 var span = document.getElementsByClassName("close")[0];
 span.onclick = function() {
@@ -39,6 +35,14 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+
+async function genInfo() {
+    var x = document.getElementById("userFrontier").value;
+    userPOW = await nanocurrency.work(x);
+    document.getElementById("model-code").innerHTML = userPOW);
+    modal.style.display = "block";
+}
+
 </script>
 </body>
 </html>
