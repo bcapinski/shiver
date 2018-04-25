@@ -5,10 +5,14 @@
 </head>
 
 <div id="output" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <p class="model-text">Some text in the Modal..</p>
-  </div>
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <br />
+        <pre class="model-code">
+        <code id="model-code">
+        </pre>
+      <p class="model-code">Some text in the Modal..</p>
+    </div>
 </div>
 
 <body>
@@ -35,7 +39,7 @@ async function genBlock() {
     data.balance = document.getElementById("userBalance").value;
     data.link = document.getElementById("userDestination").value;
     userBlock = await nanocurrency.createStateBlock(x, data);
-    document.getElementsByClassName("model-text")[0].innerHTML = JSON.stringify(userBlock);
+    document.getElementByID("model-code").innerHTML = JSON.stringify(userBlock);
     modal.style.display = "block";
 }
 var modal = document.getElementById('output');
