@@ -36,7 +36,7 @@ async function genBlock() {
     data.balance = document.getElementById("userBalance").value;
     data.link = document.getElementById("userDestination").value;
     userBlock = await nanocurrency.createStateBlock(x, data);
-    document.getElementsByClassName("model-text")[0].innerHTML = userBlock;
+    document.getElementsByClassName("model-text")[0].innerHTML = JSON.stringify(userBlock);
 
 }
 var modal = document.getElementById('output');
