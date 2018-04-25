@@ -38,3 +38,14 @@ body {font-family: Arial, Helvetica, sans-serif;}
     text-decoration: none;
     cursor: pointer;
 }
+
+pre.model-code {
+  font-family: Andale Mono, Lucida Console, Monaco, fixed, monospace; 
+  color: #000000;
+  background-color: #eee;
+  font-size: 12px;
+  line-height: 14px;
+  padding: 5px;
+  overflow-x: scroll;
+  width: 100%;
+}
