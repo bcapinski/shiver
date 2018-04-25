@@ -19,8 +19,8 @@
 <script>
 async function createBlock() {
     var x = document.getElementById("userPrivate").value;
-    var data = {work:"", previous:"", representative:"", balance:"", link:""};
-    data[work] = document.getElementById("userPOW").value;
+    var data = new Object();
+    data.work = document.getElementById("userPOW").value;
     data.previous = document.getElementById("userPrevious").value;
     data.representative = document.getElementById("userRepresentative").value;
     data.balance = document.getElementById("userBalance").value;
