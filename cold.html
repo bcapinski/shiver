@@ -2,15 +2,25 @@
 <h2>Cold Wallet:</h2>
 
 <form onsubmit="return false;">
-    <h4>Generate Address from Public Key:</h4>
-    <label>Public Key: <input type="text" id="userPublic" /></label>
-    <input type="submit" onclick="genAddress()" />
+    <h4>Generate a Block:</h4>
+    <label>Private Key: <input type="text" id="userPrivate" /></label>
+    <label>Proof of Work: <input type="text" id="userPOW" /></label>
+    <label>Previous Hash: <input type="text" id="userPrevious" /></label>
+    <label>Representative Address:: <input type="text" id="userRepresentative" /></label>
+    <label>Resulting Balance: <input type="text" id="userBalance" /></label>
+    <label>Destination: <input type="text" id="userDestination" /></label>
+    <input type="submit" onclick="createBlock()" />
 </form>
 
 <script>
-async function genAddress() {
-    var x = document.getElementById("userPublic");
-    userAddress = await nanocurrency.deriveAddress(x.value);
-    console.log(userAddress);
+async function createBlock() {
+    var x = document.getElementById("userPrivate").value;
+    var data.work = document.getElementById("userPOW").value;
+    var data.previous = document.getElementById("userPrevious").value;
+    var data.representative = document.getElementById("userRepresentative").value;
+    var data.balance = document.getElementById("userBalance").value;
+    var daa.link = document.getElementById("userDestination").value;
+    userBlock = await nanocurrency.createStateBlock(x.value).value;
+    console.log(userBlock, data);
 }
 </script>
