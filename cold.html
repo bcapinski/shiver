@@ -1,7 +1,16 @@
 <html>
 <head>
-<script src="https://wzrd.in/standalone/nanocurrency@latest"></script>
+    <script src="https://wzrd.in/standalone/nanocurrency@latest"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
+
+<div id="output" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p class="model-text">Some text in the Modal..</p>
+  </div>
+</div>
+
 <body>
 <h2>Cold Wallet:</h2>
 
@@ -26,7 +35,18 @@ async function genBlock() {
     data.balance = document.getElementById("userBalance").value;
     data.link = document.getElementById("userDestination").value;
     userBlock = await nanocurrency.createStateBlock(x, data);
-    console.log(userBlock, data);
+    document.getElementsByClassName("model-text")[0].innerHTML = "Hi";
+    modal.style.display = "block";
+}
+var modal = document.getElementById('output');
+var span = document.getElementsByClassName("close")[0];
+span.onclick = function() {
+    modal.style.display = "none";
+}
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
 </script>
 </body>
