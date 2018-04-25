@@ -1,4 +1,8 @@
+<html>
+<head>
 <script src="https://wzrd.in/standalone/nanocurrency@latest"></script>
+</head>
+<body>
 <h2>Cold Wallet:</h2>
 
 <form onsubmit="return false;">
@@ -15,12 +19,15 @@
 <script>
 async function createBlock() {
     var x = document.getElementById("userPrivate").value;
-    var data.work = document.getElementById("userPOW").value;
-    var data.previous = document.getElementById("userPrevious").value;
-    var data.representative = document.getElementById("userRepresentative").value;
-    var data.balance = document.getElementById("userBalance").value;
-    var daa.link = document.getElementById("userDestination").value;
+    var data = {work:"", previous:"", representative:"", balance:"", link:""};
+    data[work] = document.getElementById("userPOW").value;
+    data.previous = document.getElementById("userPrevious").value;
+    data.representative = document.getElementById("userRepresentative").value;
+    data.balance = document.getElementById("userBalance").value;
+    data.link = document.getElementById("userDestination").value;
     userBlock = await nanocurrency.createStateBlock(x.value).value;
     console.log(userBlock, data);
 }
 </script>
+</body>
+</html>
