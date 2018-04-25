@@ -1,0 +1,44 @@
+<html>
+<head>
+    <script src="https://wzrd.in/standalone/nanocurrency@latest"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<div id="output" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <br />
+        <p>Response:</p>
+        <pre class="model-code"><code id="model-code"></code></pre>
+    </div>
+</div>
+
+<body>
+<h2>Hot Wallet:</h2>
+<p>To generate a state block you need six things: your Private Key (sometimes reffered to as SecretKey), some Proof of Work, the previous transaction's hash (Frontier), your Representative, the balance AFTER you send your amount, and the destination address. These tools will help you find some of them. Then, just use your priavate key to generate a block.</p>
+<form onsubmit="return false;">
+    <h4>Generate Address from Public Key:</h4>
+    <label>Public Key: <input type="text" id="userPublic" /></label><br />
+    <input type="submit" onclick="genAddress()" />
+</form>
+
+<script>
+async function genBlock() {
+    var x = document.getElementById("userPrivate").value;
+    userBlock = await nanocurrency.createStateBlock(x, data);
+    document.getElementById("model-code").innerHTML = JSON.stringify(userBlock);
+    modal.style.display = "block";
+}
+var modal = document.getElementById('output');
+var span = document.getElementsByClassName("close")[0];
+span.onclick = function() {
+    modal.style.display = "none";
+}
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+</body>
+</html>
