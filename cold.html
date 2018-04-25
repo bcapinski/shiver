@@ -2,10 +2,8 @@
 <button id="click" onclick="dothis()">clickme</button>
 <script>
 var x = document.getElementById("click");
-var y = require('nanocurrency');
 function dothis(theObject) {
-    seed = nanocurrency.generateSeed()
+    seed = await nanocurrency.generateSeed()
     console.log(seed);
-    console.log(nanocurrency)
 }
 </script>
