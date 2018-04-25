@@ -1,22 +1,32 @@
 <script src="https://wzrd.in/standalone/nanocurrency@latest"></script>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+
+<div id="output" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <br />
+        <p>Your Block:</p>
+        <pre class="model-code"><code id="model-code"></code></pre>
+</div>
+
 <h2>Tools:</h2>
 
 <form onsubmit="return false;">
     <h4>Generate Private Key from Seed:</h4>
-    <label>Seed: <input type="text" id="userSeed" /></label>
-    <label>Index: <input type="text" id="userIndex" /></label>
+    <label>Seed: <input type="text" id="userSeed" /></label><br />
+    <label>Index: <input type="text" id="userIndex" /></label><br /><br />
     <input type="submit" onclick="genPrivate()" />
 </form>
 
 <form onsubmit="return false;">
     <h4>Generate Public Key from Private Key:</h4>
-    <label>Private Key: <input type="text" id="userPrivate" /></label>
+    <label>Private Key: <input type="text" id="userPrivate" /></label><br />
     <input type="submit" onclick="genPublic()" />
 </form>
 
 <form onsubmit="return false;">
     <h4>Generate Address from Public Key:</h4>
-    <label>Public Key: <input type="text" id="userPublic" /></label>
+    <label>Public Key: <input type="text" id="userPublic" /></label><br />
     <input type="submit" onclick="genAddress()" />
 </form>
 
@@ -25,19 +35,22 @@ async function genPrivate() {
     var x = document.getElementById("userSeed");
     var y = document.getElementById("userIndex");
     userPriv = await nanocurrency.deriveSecretKey(x.value, parseInt(y.value));
-    console.log(userPriv);
+    document.getElementById("model-code").innerHTML = JSON.stringify(userPriv);
+    modal.style.display = "block";
 }
 
 async function genPublic() {
     var x = document.getElementById("userPrivate");
-    userPriv = await nanocurrency.derivePublicKey(x.value);
-    console.log(userPriv);
+    userPub = await nanocurrency.derivePublicKey(x.value);
+    document.getElementById("model-code").innerHTML = JSON.stringify(userPub);
+    modal.style.display = "block";
 }
 
 async function genAddress() {
     var x = document.getElementById("userPublic");
     userAddress = await nanocurrency.deriveAddress(x.value);
-    console.log(userAddress);
+    document.getElementById("model-code").innerHTML = JSON.stringify(userAddress);
+    modal.style.display = "block";
 }
 
 </script>
