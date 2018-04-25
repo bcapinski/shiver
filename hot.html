@@ -39,7 +39,7 @@ window.onclick = function(event) {
 async function genInfo() {
     var x = document.getElementById("userFrontier").value;
     userPOW = await nanocurrency.work(x);
-    document.getElementById("model-code").innerHTML = userPOW);
+    document.getElementById("model-code").innerHTML = userPOW;
     modal.style.display = "block";
 }
 
