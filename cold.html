@@ -25,7 +25,7 @@ async function createBlock() {
     data.representative = document.getElementById("userRepresentative").value;
     data.balance = document.getElementById("userBalance").value;
     data.link = document.getElementById("userDestination").value;
-    userBlock = await nanocurrency.createStateBlock(x.value).value;
+    userBlock = await nanocurrency.createStateBlock(x.value);
     console.log(userBlock, data);
 }
 </script>
