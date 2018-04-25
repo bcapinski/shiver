@@ -5,7 +5,7 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <br />
-        <p>Your Block:</p>
+        <p>Response:</p>
         <pre class="model-code"><code id="model-code"></code></pre>
     </div>
 </div>
@@ -36,21 +36,21 @@ async function genPrivate() {
     var x = document.getElementById("userSeed");
     var y = document.getElementById("userIndex");
     userPriv = await nanocurrency.deriveSecretKey(x.value, parseInt(y.value));
-    document.getElementById("model-code").innerHTML = JSON.stringify(userPriv);
+    document.getElementById("model-code").innerHTML = userPriv;
     modal.style.display = "block";
 }
 
 async function genPublic() {
     var x = document.getElementById("userPrivate");
     userPub = await nanocurrency.derivePublicKey(x.value);
-    document.getElementById("model-code").innerHTML = JSON.stringify(userPub);
+    document.getElementById("model-code").innerHTML = userPub;
     modal.style.display = "block";
 }
 
 async function genAddress() {
     var x = document.getElementById("userPublic");
     userAddress = await nanocurrency.deriveAddress(x.value);
-    document.getElementById("model-code").innerHTML = JSON.stringify(userAddress);
+    document.getElementById("model-code").innerHTML = userAddress;
     modal.style.display = "block";
 }
 
