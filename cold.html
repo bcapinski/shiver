@@ -1,0 +1,16 @@
+<script src="https://wzrd.in/standalone/nanocurrency@latest"></script>
+<h2>Cold Wallet:</h2>
+
+<form onsubmit="return false;">
+    <h4>Generate Address from Public Key:</h4>
+    <label>Public Key: <input type="text" id="userPublic" /></label>
+    <input type="submit" onclick="genAddress()" />
+</form>
+
+<script>
+async function genAddress() {
+    var x = document.getElementById("userPublic");
+    userAddress = await nanocurrency.deriveAddress(x.value);
+    console.log(userAddress);
+}
+</script>
