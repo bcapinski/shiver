@@ -2,7 +2,7 @@
 <button id="click" onclick="dothis()">clickme</button>
 <script>
 var x = document.getElementById("click");
-function dothis(theObject) {
+async function dothis(theObject) {
     seed = await nanocurrency.generateSeed();
     console.log(seed);
 }
