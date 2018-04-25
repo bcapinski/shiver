@@ -1,6 +1,7 @@
 <html>
 <head>
     <script src="https://wzrd.in/standalone/nanocurrency@latest"></script>
+    <script src="https://wzrd.in/standalone/nanode@latest"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
@@ -15,11 +16,14 @@
 
 <body>
 <h2>Hot Wallet:</h2>
-<p>To generate a state block you need six things: your Private Key (sometimes reffered to as SecretKey), some Proof of Work, the previous transaction's hash (Frontier), your Representative, the balance AFTER you send your amount, and the destination address. These tools will help you find them. Then, just use your private key to generate a block with your Cold Wallet.</p>
+<p>Requires Nanode API key.</p>
 
 <form onsubmit="return false;">
     <h4>Generate Information:</h4>
-    <label>Previous Block Hash (Frontier): <input type="text" id="userFrontier" /></label><br />
+    <label>Nanode API Key: <input type="text" id="userAPI" /></label><br />
+    <label>Your Account: <input type="text" id="userAccount" /></label><br />
+    <label>Destination: <input type="text" id="userDestination" /></label><br />
+    <label>Amount: <input type="text" id="userAmount" /></label><br />
     <input type="submit" onclick="genInfo()" />
 </form>
 
