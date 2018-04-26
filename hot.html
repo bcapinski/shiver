@@ -1,6 +1,5 @@
 <html>
 <head>
-    <script src="https://wzrd.in/standalone/nanocurrency@latest"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -16,7 +15,7 @@
 
 <body>
 <h2>Hot Wallet:</h2>
-<p>Requires Nanode API key.</p>
+<p>Requires Nanode API key. A state block requires: Private Key, Proof of Work, Previous Hash, Representative Address, Resulting Balance, and Destination Address.</p>
 
 <form onsubmit="return false;">
     <h4>Generate Information:</h4>
@@ -30,18 +29,28 @@
 <script>
 
 async function getInfo() {
+    var userAPI = document.getElementById('userAPI').value;
+    var userAccount = document.getElementById('userAccount').value;
     var rpc = axios.create({
         baseURL: 'https://api.nanode.co',
         headers: {
-            Authorization: '780ae601-4058-11e8-bbde-4706d2f4613e'
+            Authorization: userAPI
         }
     })
     var info = await rpc.post('/', {
         action: 'account_info',
-        account: 'xrb_18dkuz87wt94w4ykjatzqto786zz3p6urkswbopugmmw7ps8thcfpzassfxh',
+        account: userAccount,
         count: 1
     })
-    document.getElementById("model-code").innerHTML = JSON.stringify(info);
+    var work = await rpc.post('/', {
+        action: 'work_generate',
+        hash: info.data.frontier
+    })
+    var rep = await rpc.post('/', {
+        action: 'account_representative',
+        account: userAccount
+    })
+    document.getElementById("model-code").innerHTML = rep.data.representative;
     modal.style.display = "block";
 }
 
