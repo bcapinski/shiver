@@ -2,7 +2,6 @@
 
 <head>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://wzrd.in/standalone/nano-prettify@latest"></script>
     <script src='https://cdn.rawgit.com/MikeMcl/big.js/8759c0f1/big.min.js'></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -42,6 +41,8 @@
             var userAccount = document.getElementById('userAccount').value;
             var userDestination = document.getElementById('userDestination').value;
             var userAmount = document.getElementById('userAmount').value;
+            var multNANO = Big('1000000000000000000000000000000'); // 10^30
+            var divNANO = Big('0.000000000000000000000000000001'); // 10^-30
             var rpc = axios.create({
                 baseURL: 'https://api.nanode.co',
                 headers: {
@@ -61,10 +62,11 @@
                 action: 'account_representative',
                 account: userAccount
             })
-            userBalance = new Big(nanoPrettify.nanoPrettify(info.data.balance.padStart(30, "0"), {commas: false, decimalPlaces: 0}));
+            userBalance = Big(Big(info.data.balance).times(divNANO));
             userBalance = userBalance.minus(userAmount);
-            userBalance = String(userBalance).replace('.', '').padEnd(30, "0");
-            document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + userBalance + "\nDestination Address:\n" + userDestination;
+            userBalance = Big(userBalance.times(multNANO)).toFixed();
+            document.getElementById("model-code").innerHTML = userBalance;
+            // document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + userBalance + "\nDestination Address:\n" + userDestination;
             modal.style.display = "block";
         }
         
