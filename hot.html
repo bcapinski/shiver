@@ -28,6 +28,13 @@
         <label>Amount: <input type="text" id="userAmount" /></label><br />
         <input type="submit" onclick="getInfo()" />
     </form>
+    
+    <form onsubmit="return false;">
+        <h4>Send Transaction (returns transaction hash):</h4>
+        <label>Nanode API Key: <input type="text" id="userAPI" /></label><br />
+        <label>Your Block: <input type="text" id="userBlock" /></label><br />
+        <input type="submit" onclick="sendBlock()" />
+    </form>
 
     <script>
         async function getInfo() {
@@ -58,6 +65,23 @@
             userBalance = userBalance.minus(userAmount);
             userBalance = String(userBalance).replace('.', '').padEnd(30, "0");
             document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + userBalance + "\nDestination Address:\n" + userDestination;
+            modal.style.display = "block";
+        }
+        
+        async function getInfo() {
+            var rpc = axios.create({
+                baseURL: 'https://api.nanode.co',
+                headers: {
+                    Authorization: userAPI
+                }
+            })
+            var userAPI = document.getElementById('userAPI').value;
+            var userBlock = document.getElementById('userBlock').value;
+            var hash = await rpc.post('/', {
+                action: 'process',
+                block: userBlock
+            })
+            document.getElementById("model-code").innerHTML = hash.data.hash;
             modal.style.display = "block";
         }
 
