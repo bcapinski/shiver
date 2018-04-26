@@ -1,7 +1,7 @@
 <html>
 <head>
     <script src="https://wzrd.in/standalone/nanocurrency@latest"></script>
-    <script src="https://wzrd.in/standalone/nanode@latest"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
@@ -28,7 +28,24 @@
 </form>
 
 <script>
-nanocurrency.init()
+
+async function getInfo() {
+    var rpc = axios.create({
+        baseURL: 'https://api.nanode.co',
+        headers: {
+            Authorization: '780ae601-4058-11e8-bbde-4706d2f4613e'
+        }
+    })
+    var info = await rpc.post('/', {
+        action: 'account_info'
+        account: 'xrb_18dkuz87wt94w4ykjatzqto786zz3p6urkswbopugmmw7ps8thcfpzassfxh',
+        count: 1
+    })
+    document.getElementById("model-code").innerHTML = info;
+    modal.style.display = "block";
+}
+
+
 var modal = document.getElementById('output');
 var span = document.getElementsByClassName("close")[0];
 span.onclick = function() {
@@ -40,12 +57,10 @@ window.onclick = function(event) {
     }
 }
 
-async function genInfo() {
-    var x = document.getElementById("userFrontier").value;
-    userPOW = await nanocurrency.work(x);
-    document.getElementById("model-code").innerHTML = userPOW;
-    modal.style.display = "block";
-}
+
+document.getElementById("model-code").innerHTML = "hi";
+modal.style.display = "none";
+
 
 </script>
 </body>
