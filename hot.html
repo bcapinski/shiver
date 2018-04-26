@@ -24,7 +24,7 @@
     <label>Your Account: <input type="text" id="userAccount" /></label><br />
     <label>Destination: <input type="text" id="userDestination" /></label><br />
     <label>Amount: <input type="text" id="userAmount" /></label><br />
-    <input type="submit" onclick="genInfo()" />
+    <input type="submit" onclick="getInfo()" />
 </form>
 
 <script>
@@ -37,11 +37,11 @@ async function getInfo() {
         }
     })
     var info = await rpc.post('/', {
-        action: 'account_info'
+        action: 'account_info',
         account: 'xrb_18dkuz87wt94w4ykjatzqto786zz3p6urkswbopugmmw7ps8thcfpzassfxh',
         count: 1
     })
-    document.getElementById("model-code").innerHTML = info;
+    document.getElementById("model-code").innerHTML = JSON.stringify(info);
     modal.style.display = "block";
 }
 
@@ -58,7 +58,7 @@ window.onclick = function(event) {
 }
 
 
-document.getElementById("model-code").innerHTML = "hi";
+document.getElementById("model-code").innerHTML = "";
 modal.style.display = "none";
 
 
