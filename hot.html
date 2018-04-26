@@ -1,6 +1,9 @@
 <html>
+
 <head>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://wzrd.in/standalone/nano-prettify@latest"></script>
+    <script src='https://cdn.rawgit.com/MikeMcl/big.js/8759c0f1/big.min.js'></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
@@ -14,63 +17,66 @@
 </div>
 
 <body>
-<h2>Hot Wallet:</h2>
-<p>Requires Nanode API key. A state block requires: Private Key, Proof of Work, Previous Hash, Representative Address, Resulting Balance, and Destination Address.</p>
+    <h2>Hot Wallet:</h2>
+    <p>Requires Nanode API key. A state block requires: Private Key, Proof of Work, Previous Hash, Representative Address, Resulting Balance, and Destination Address.</p>
 
-<form onsubmit="return false;">
-    <h4>Generate Information:</h4>
-    <label>Nanode API Key: <input type="text" id="userAPI" /></label><br />
-    <label>Your Account: <input type="text" id="userAccount" /></label><br />
-    <label>Destination: <input type="text" id="userDestination" /></label><br />
-    <label>Amount: <input type="text" id="userAmount" /></label><br />
-    <input type="submit" onclick="getInfo()" />
-</form>
+    <form onsubmit="return false;">
+        <h4>Generate Information:</h4>
+        <label>Nanode API Key: <input type="text" id="userAPI" /></label><br />
+        <label>Your Account: <input type="text" id="userAccount" /></label><br />
+        <label>Destination: <input type="text" id="userDestination" /></label><br />
+        <label>Amount: <input type="text" id="userAmount" /></label><br />
+        <input type="submit" onclick="getInfo()" />
+    </form>
 
-<script>
-
-async function getInfo() {
-    var userAPI = document.getElementById('userAPI').value;
-    var userAccount = document.getElementById('userAccount').value;
-    var rpc = axios.create({
-        baseURL: 'https://api.nanode.co',
-        headers: {
-            Authorization: userAPI
+    <script>
+        async function getInfo() {
+            var userAPI = document.getElementById('userAPI').value;
+            var userAccount = document.getElementById('userAccount').value;
+            var userDestination = document.getElementById('userDestination').value;
+            var userAmount = document.getElementById('userAmount').value;
+            var rpc = axios.create({
+                baseURL: 'https://api.nanode.co',
+                headers: {
+                    Authorization: userAPI
+                }
+            })
+            var info = await rpc.post('/', {
+                action: 'account_info',
+                account: userAccount,
+                count: 1
+            })
+            var work = await rpc.post('/', {
+                action: 'work_generate',
+                hash: info.data.frontier
+            })
+            var rep = await rpc.post('/', {
+                action: 'account_representative',
+                account: userAccount
+            })
+            userBalance = new Big(nanoPrettify.nanoPrettify(info.data.balance.padStart(30, "0"), {commas: false, decimalPlaces: 0}));
+            userBalance = userBalance.minus(userAmount);
+            userBalance = String(userBalance).replace('.', '').padEnd(30, "0");
+            document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + userBalance + "\nDestination Address:\n" + userDestination;
+            modal.style.display = "block";
         }
-    })
-    var info = await rpc.post('/', {
-        action: 'account_info',
-        account: userAccount,
-        count: 1
-    })
-    var work = await rpc.post('/', {
-        action: 'work_generate',
-        hash: info.data.frontier
-    })
-    var rep = await rpc.post('/', {
-        action: 'account_representative',
-        account: userAccount
-    })
-    document.getElementById("model-code").innerHTML = rep.data.representative;
-    modal.style.display = "block";
-}
 
 
-var modal = document.getElementById('output');
-var span = document.getElementsByClassName("close")[0];
-span.onclick = function() {
-    modal.style.display = "none";
-}
-window.onclick = function(event) {
-    if (event.target == modal) {
+        var modal = document.getElementById('output');
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+
+        document.getElementById("model-code").innerHTML = "";
         modal.style.display = "none";
-    }
-}
-
-
-document.getElementById("model-code").innerHTML = "";
-modal.style.display = "none";
-
-
-</script>
+    </script>
 </body>
+
 </html>
