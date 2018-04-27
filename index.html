@@ -18,10 +18,22 @@
             <div class="one-half column" style="margin-top: 25%">
                 <h3>Nano Cold Wallet</h3>
                 <p>Nano Cold Wallet is a web-based light wallet that allows offline signing of transactions. This allows you to keep your seed on an air-gapped computer, and only use it when you need it. Your seed will never touch a computer that's connected to the Internet, dropping possible attack vectors to nearly zero.</p>
-                <p>For collecting the data needed to create a state block and then broadcasting it to the network, I use the <a href="https://api.nanode.co">Nanode Node API</a>. Unfortuunately, I can't afford to use my own API key, so you'll have to sign up (it's easy), and fill your key in to the fields where the wallet asks for it. This elminates most node issues my own node would have, and allows you to independantly verify the data is correct.</p>
+                <p>For collecting the data needed to create a state block and then broadcasting it to the network, I use the <a href="https://api.nanode.co">Nanode Node API</a>. Unforunately, I can't afford to use my own API key, so you'll have to sign up (it's easy), and fill your key in to the fields where the wallet asks for it. This elminates most node issues my own node would have, and allows you to independantly verify the data is correct.</p>
                 <p>You can access the hot wallet portion (the part that needs Internet) of <a href="hot.html">the site here</a>.</p>
                 <p>You can access the cold wallet portion (the offline signing page) of <a href="cold.html">the site here</a>.</p>
                 <p>For tools to derive your public key, private key, and address from your seed, <a href="tools.html">visit here</a>.</p>
+                <br />
+                <br />
+                <p>Here is a basic outline of the steps required:</p>
+                <ol>
+                    <li>Go to the hot wallet and input your API key, your address, the destination address, and amount to send. Copy the information to your airgapped computer either manually or with a flash drive.</li>
+                    <li>Download the website onto your computer where your seed is stored and input the required information. This requires a private key, so you can use the tools site to generate it from your seed. Copy the outputed block to your hot computer.</li>
+                    <li>Input the block into the send transaction form along with your API key. It will broadcast your block to the network.</li>
+                </ol>
+                <br />
+                <br />
+                <p>Support for recieve blocks is coming soon.</p>
+                <p>Donations are apreciated: xrb_18dkuz87wt94w4ykjatzqto786zz3p6urkswbopugmmw7ps8thcfpzassfxh</p>
             </div>
         </div>
     </div>
