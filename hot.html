@@ -30,7 +30,7 @@
     
     <form onsubmit="return false;">
         <h4>Send Transaction (returns transaction hash):</h4>
-        <label>Nanode API Key: <input type="text" id="userAPI" /></label><br />
+        <label>Nanode API Key: <input type="text" id="userAPI2" /></label><br />
         <label>Your Block: <input type="text" id="userBlock" /></label><br />
         <input type="submit" onclick="sendBlock()" />
     </form>
@@ -70,7 +70,7 @@
         }
         
         async function sendBlock() {
-            var userAPI = document.getElementById('userAPI').value;
+            var userAPI = document.getElementById('userAPI2').value;
             var userBlock = document.getElementById('userBlock').value;
             var rpc = axios.create({
                 baseURL: 'https://api.nanode.co',
