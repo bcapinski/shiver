@@ -70,14 +70,14 @@
         }
         
         async function sendBlock() {
+            var userAPI = document.getElementById('userAPI').value;
+            var userBlock = document.getElementById('userBlock').value;
             var rpc = axios.create({
                 baseURL: 'https://api.nanode.co',
                 headers: {
                     Authorization: userAPI
                 }
             })
-            var userAPI = document.getElementById('userAPI').value;
-            var userBlock = document.getElementById('userBlock').value;
             var hash = await rpc.post('/', {
                 action: 'process',
                 block: userBlock
