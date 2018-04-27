@@ -255,67 +255,67 @@
                 </form>
                 
                     <script>
-        async function getInfo() {
-            var userAPI = document.getElementById('userAPI').value;
-            var userAccount = document.getElementById('userAccount').value;
-            var userDestination = document.getElementById('userDestination').value;
-            var userAmount = document.getElementById('userAmount').value;
-            var multNANO = Big('1000000000000000000000000000000'); // 10^30
-            var divNANO = Big('0.000000000000000000000000000001'); // 10^-30
-            var rpc = axios.create({
-                baseURL: 'https://api.nanode.co',
-                headers: {
-                    Authorization: userAPI
-                }
-            })
-            var info = await rpc.post('/', {
-                action: 'account_info',
-                account: userAccount,
-                count: 1
-            })
-            var work = await rpc.post('/', {
-                action: 'work_generate',
-                hash: info.data.frontier
-            })
-            var rep = await rpc.post('/', {
-                action: 'account_representative',
-                account: userAccount
-            })
-            userBalance = Big(Big(info.data.balance).times(divNANO));
-            userBalance = userBalance.minus(userAmount);
-            userBalance = Big(userBalance.times(multNANO)).toFixed();
-            document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + userBalance + "\nDestination Address:\n" + userDestination;
-            modal.style.display = "block";
-        }
+                        async function getInfo() {
+                            var userAPI = document.getElementById('userAPI').value;
+                            var userAccount = document.getElementById('userAccount').value;
+                            var userDestination = document.getElementById('userDestination').value;
+                            var userAmount = document.getElementById('userAmount').value;
+                            var multNANO = Big('1000000000000000000000000000000'); // 10^30
+                            var divNANO = Big('0.000000000000000000000000000001'); // 10^-30
+                            var rpc = axios.create({
+                            baseURL: 'https://api.nanode.co',
+                            headers: {
+                                    Authorization: userAPI
+                                }
+                            })
+                            var info = await rpc.post('/', {
+                                action: 'account_info',
+                                account: userAccount,
+                                count: 1
+                            })
+                            var work = await rpc.post('/', {
+                                action: 'work_generate',
+                                hash: info.data.frontier
+                            })
+                            var rep = await rpc.post('/', {
+                                action: 'account_representative',
+                                account: userAccount
+                            })
+                            userBalance = Big(Big(info.data.balance).times(divNANO));
+                            userBalance = userBalance.minus(userAmount);
+                            userBalance = Big(userBalance.times(multNANO)).toFixed();
+                            document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + userBalance + "\nDestination Address:\n" + userDestination;
+                            modal.style.display = "block";
+                        }
         
-        async function sendBlock() {
-            var userAPI = document.getElementById('userAPI').value;
-            var userBlock = document.getElementById('userBlock').value;
-            var rpc = axios.create({
-                baseURL: 'https://api.nanode.co',
-                headers: {
-                    Authorization: userAPI
-                }
-            })
-            var hash = await rpc.post('/', {
-                action: 'process',
-                block: userBlock
-            })
-            document.getElementById("model-code").innerHTML = hash.data.hash;
-            modal.style.display = "block";
-        }
-        var modal = document.getElementById('output');
-        var span = document.getElementsByClassName("close")[0];
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-        document.getElementById("model-code").innerHTML = "";
-        modal.style.display = "none";
+                        async function sendBlock() {
+                            var userAPI = document.getElementById('userAPI').value;
+                            var userBlock = document.getElementById('userBlock').value;
+                            var rpc = axios.create({
+                            baseURL: 'https://api.nanode.co',
+                                headers: {
+                                    Authorization: userAPI
+                                }
+                            })
+                            var hash = await rpc.post('/', {
+                                action: 'process',
+                                block: userBlock
+                            })
+                            document.getElementById("model-code").innerHTML = hash.data.hash;
+                            modal.style.display = "block";
+                        }
+                        var modal = document.getElementById('output');
+                        var span = document.getElementsByClassName("close")[0];
+                        span.onclick = function() {
+                            modal.style.display = "none";
+                        }
+                        window.onclick = function(event) {
+                            if (event.target == modal) {
+                                modal.style.display = "none";
+                            }
+                        }
+                        document.getElementById("model-code").innerHTML = "";
+                        modal.style.display = "none";
     </script>
             </section>
             
