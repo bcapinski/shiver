@@ -237,40 +237,40 @@
             <section class="container" id="hot">
                 <h3 class="title">Hot Wallet</h3>
                 <p>Requires Nanode API key. A state block requires: Private Key, Proof of Work, Previous Hash, Representative Address, Resulting Balance, and Destination Address.</p>
-                <label>Nanode API Key: <input type="text" id="userAPI" /></label><br />
+                <label>Nanode API Key: <input type="text" id="hotAPI" /></label><br />
 
 
                 <form onsubmit="return false;">
                     <h4>Generate Information:</h4>
-                    <label>Your Account: <input type="text" id="userAccount" /></label>
-                    <label>Destination: <input type="text" id="userDestination" /></label>
-                    <label>Amount: <input type="text" id="userAmount" /></label>
+                    <label>Your Account: <input type="text" id="hotAccount" /></label>
+                    <label>Destination: <input type="text" id="hotDestination" /></label>
+                    <label>Amount: <input type="text" id="hotAmount" /></label>
                     <input type="submit" onclick="getInfo()" />
                 </form>
     
                 <form onsubmit="return false;">
                     <h4>Send Transaction (returns transaction hash):</h4>
-                    <label>Your Block: <input type="text" id="userBlock" /></label>
+                    <label>Your Block: <input type="text" id="hotBlock" /></label>
                     <input type="submit" onclick="sendBlock()" />
                 </form>
                 
                     <script>
                         async function getInfo() {
-                            var userAPI = document.getElementById('userAPI').value;
-                            var userAccount = document.getElementById('userAccount').value;
-                            var userDestination = document.getElementById('userDestination').value;
-                            var userAmount = document.getElementById('userAmount').value;
+                            var hotAPI = document.getElementById('hotAPI').value;
+                            var hotAccount = document.getElementById('hotAccount').value;
+                            var hotDestination = document.getElementById('hotDestination').value;
+                            var hotAmount = document.getElementById('hotAmount').value;
                             var multNANO = Big('1000000000000000000000000000000'); // 10^30
                             var divNANO = Big('0.000000000000000000000000000001'); // 10^-30
                             var rpc = axios.create({
                             baseURL: 'https://api.nanode.co',
                             headers: {
-                                    Authorization: userAPI
+                                    Authorization: hotAPI
                                 }
                             })
                             var info = await rpc.post('/', {
                                 action: 'account_info',
-                                account: userAccount,
+                                account: hotAccount,
                                 count: 1
                             })
                             var work = await rpc.post('/', {
@@ -279,27 +279,27 @@
                             })
                             var rep = await rpc.post('/', {
                                 action: 'account_representative',
-                                account: userAccount
+                                account: hotAccount
                             })
-                            userBalance = Big(Big(info.data.balance).times(divNANO));
-                            userBalance = userBalance.minus(userAmount);
-                            userBalance = Big(userBalance.times(multNANO)).toFixed();
+                            hotBalance = Big(Big(info.data.balance).times(divNANO));
+                            hotBalance = hotBalance.minus(hotAmount);
+                            hotBalance = Big(hotBalance.times(multNANO)).toFixed();
                             document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + userBalance + "\nDestination Address:\n" + userDestination;
                             modal.style.display = "block";
                         }
         
                         async function sendBlock() {
-                            var userAPI = document.getElementById('userAPI').value;
-                            var userBlock = document.getElementById('userBlock').value;
+                            var hotAPI = document.getElementById('hotAPI').value;
+                            var hotBlock = document.getElementById('hotBlock').value;
                             var rpc = axios.create({
                             baseURL: 'https://api.nanode.co',
                                 headers: {
-                                    Authorization: userAPI
+                                    Authorization: hotAPI
                                 }
                             })
                             var hash = await rpc.post('/', {
                                 action: 'process',
-                                block: userBlock
+                                block: hotBlock
                             })
                             document.getElementById("model-code").innerHTML = hash.data.hash;
                             modal.style.display = "block";
@@ -324,39 +324,39 @@
                 <h3 class="title">Cold Wallet</h3>
                 <form onsubmit="return false;">
                     <h4>Generate a Block:</h4>
-                    <label>Private Key: <input type="text" id="userPrivate" /></label>
-                    <label>Proof of Work: <input type="text" id="userPOW" /></label>
-                    <label>Previous Hash (Frontier): <input type="text" id="userPrevious" /></label>
-                    <label>Representative Address: <input type="text" id="userRepresentative" /></label>
-                    <label>Resulting Balance (Balance after you send your transaction): <input type="text" id="userBalance" /></label>
-                    <label>Destination Address: <input type="text" id="userDestination" /></label>
+                    <label>Private Key: <input type="text" id="coldPrivate" /></label>
+                    <label>Proof of Work: <input type="text" id="coldPOW" /></label>
+                    <label>Previous Hash (Frontier): <input type="text" id="coldPrevious" /></label>
+                    <label>Representative Address: <input type="text" id="coldRepresentative" /></label>
+                    <label>Resulting Balance (Balance after you send your transaction): <input type="text" id="coldBalance" /></label>
+                    <label>Destination Address: <input type="text" id="coldDestination" /></label>
                     <input type="submit" onclick="genBlock()" />
                 </form>
                 
-<script>
-async function genBlock() {
-    var x = document.getElementById("userPrivate").value;
-    var data = new Object();
-    data.work = String(document.getElementById("userPOW").value);
-    data.previous = document.getElementById("userPrevious").value;
-    data.representative = document.getElementById("userRepresentative").value;
-    data.balance = document.getElementById("userBalance").value;
-    data.link = document.getElementById("userDestination").value;
-    userBlock = await nanocurrency.createStateBlock(x, data);
-    document.getElementById("model-code").innerHTML = JSON.stringify(userBlock.block);
-    modal.style.display = "block";
-}
-var modal = document.getElementById('output');
-var span = document.getElementsByClassName("close")[0];
-span.onclick = function() {
-    modal.style.display = "none";
-}
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-</script>
+                <script>
+                async function genBlock() {
+                    var x = document.getElementById("coldPrivate").value;
+                    var data = new Object();
+                    data.work = String(document.getElementById("coldPOW").value);
+                    data.previous = document.getElementById("coldPrevious").value;
+                    data.representative = document.getElementById("coldRepresentative").value;
+                    data.balance = document.getElementById("coldBalance").value;
+                    data.link = document.getElementById("coldDestination").value;
+                    coldBlock = await nanocurrency.createStateBlock(x, data);
+                    document.getElementById("model-code").innerHTML = JSON.stringify(coldBlock.block);
+                    modal.style.display = "block";
+                }
+                var modal = document.getElementById('output');
+                var span = document.getElementsByClassName("close")[0];
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+                </script>
                 
             </section>
             
