@@ -31,6 +31,13 @@
     <input type="submit" onclick="genAddress()" />
 </form>
 
+<form onsubmit="return false;">
+    <h4>Validate Proof of Work:</h4>
+    <label>Hash: <input type="text" id="userHash" /></label><br />
+    <label>POW: <input type="text" id="userPOW" /></label><br />
+    <input type="submit" onclick="validate()" />
+</form>
+
 <script>
 async function genPrivate() {
     var x = document.getElementById("userSeed");
@@ -63,6 +70,14 @@ window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
+}
+
+async function validate() {
+    var x = document.getElementById("userHash").value;
+    var y = document.getElementById("userPOW").value;
+    userPriv = await nanocurrency.validateWork(x, y);
+    document.getElementById("model-code").innerHTML = userPriv;
+    modal.style.display = "block";
 }
 
 </script>
