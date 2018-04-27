@@ -65,8 +65,7 @@
             userBalance = Big(Big(info.data.balance).times(divNANO));
             userBalance = userBalance.minus(userAmount);
             userBalance = Big(userBalance.times(multNANO)).toFixed();
-            document.getElementById("model-code").innerHTML = userBalance;
-            // document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + userBalance + "\nDestination Address:\n" + userDestination;
+            document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + userBalance + "\nDestination Address:\n" + userDestination;
             modal.style.display = "block";
         }
         
