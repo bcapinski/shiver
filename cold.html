@@ -1,6 +1,6 @@
 <html>
 <head>
-    <script src="https://wzrd.in/standalone/nanocurrency@latest"></script>
+    <script src="js/nanocurrency.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
@@ -36,7 +36,7 @@ async function genBlock() {
     data.representative = document.getElementById("userRepresentative").value;
     data.balance = document.getElementById("userBalance").value;
     data.link = document.getElementById("userDestination").value;
-    userBlock = await nanocurrency.createStateBlock(x, data);
+    userBlock = await createStateBlock(x, data);
     document.getElementById("model-code").innerHTML = JSON.stringify(userBlock.block);
     modal.style.display = "block";
 }
