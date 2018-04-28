@@ -221,30 +221,38 @@
             
             <section class="container" id="about">
                 <h3 class="title">About</h3>
-                <p>Nano Cold Wallet is a web-based light wallet that allows offline signing of transactions. This allows you to keep your seed on an air-gapped computer, and only use it when you need it. Your seed will never touch a computer that's connected to the Internet, dropping possible attack vectors to nearly zero.</p>
-                <p>For collecting the data needed to create a state block and then broadcasting it to the network, I use the <a href="https://api.nanode.co">Nanode Node API</a>. Unforunately, I can't afford to use my own API key, so you'll have to sign up (it's easy), and fill your key in to the fields where the wallet asks for it. This elminates most node issues my own node would have, and allows you to independantly verify the data is correct.</p>
+                <p>Nano Cold Wallet is a web-based light wallet that permits offline signing of transactions. This allows you to keep your seed safe on an air-gapped computer, and only access it when you need to sign something. Your seed will never touch a computer that's connected to the Internet, dropping possible attack vectors to nearly zero.</p>
+                <p>Simply <a href="" download>download a copy of this webpage</a> onto a flashdrive (You should only need one file, download.html. It's completely self contained). Use a device connected to the internet to gather the data requried for a state/send block. Transfer it to your air-gapped computer and sign the transaction using your private key (theres a seed --> private key tool at the bottom of the page), then send it on the Internet-connected device.</p>
             </section>
             
             <section class="container" id="instructions">
                 <h3 class="title">Instructions</h3>
+                <p>I've tried to make the process of sending and receiving Nano as painless as possible and the instructions clear. However, the hot wallet is mainly an interace for the Nanode Node API, so you'll need a key from the Nanode website (linked below).</p>
+                <br />
+                <h4>Sending a Transaction:</h4>
                 <ul>
-                    <li>Go to the hot wallet and input your API key, your address, the destination address, and amount to send. Copy the information to your airgapped computer either manually or with a flash drive.</li>
-                    <li>Download the website onto your computer where your seed is stored and input the required information. This requires a private key, so you can use the tools site to generate it from your seed. Copy the outputed block to your hot computer.</li>
-                    <li>Input the block into the send transaction form along with your API key. It will broadcast your block to the network.</li>
-                <ul>
+                    <li>Get a <a href="https://api.nanode.co">Nanode API key.</a> You'll need it to gather the data from the network and send your signed block.</li>
+                    <li><a href="" download>Download this page</a>. It's entirely self-contained, so all you need is your download.html file. Transfer it to a recently-formatted flash drive and for maximum security do it on a new operating system/virtual machine.</li>
+                    <li>On a computer connected to the Internet, go to the Hot Wallet section and input your Nanode API key. Scroll down to the "Gather Information:" form and input your address, the destination address, and the amount you want to send in NANO (Mxrb). It may take up to ten seconds to load, so give it a little time once you press "Submit".</li>
+                    <li>Copy the information to a computer disconnected from the Internet with your private key or seed on it. You can do this with a flash drive, manually type it in (not recommended - it's too easy to make a mistake), or copy the information to some QR-code website (native support coming soon!) and scan it in on the offline computer.</li>
+                    <li>Convert your seed to a private key using the Tools section if you don't have it already. Then just fill in the "Generate a State/Send Block" form in the Cold Wallet section with the information given to you by the hot wallet: Proof of Work, Previous Hash, Representative Address, Resulting Balance, and the Destination Address.</li>
+                    <li>Copy the outputted state block back to your online computer. Return to the Hot Wallet section and input your block into the "Send Transaction" form Your block should immediately be processed and broadcasted to the Nano network.</li>
+                </ul>
+                <h4>Recieving a Transaction</h4>
+                <p>This feature is not available yet.</p>
             </section>
             
             <section class="container" id="hot">
                 <h3 class="title">Hot Wallet</h3>
-                <p>Requires Nanode API key. A state block requires: Private Key, Proof of Work, Previous Hash, Representative Address, Resulting Balance, and Destination Address.</p>
+                <p>Requires Nanode API key. This will generate the information needed that, along with your private key, can sign a  block.</p>
                 <label>Nanode API Key: <input type="text" id="hotAPI" /></label><br />
 
 
                 <form onsubmit="return false;">
                     <h4>Generate Information:</h4>
                     <label>Your Account: <input type="text" id="hotAccount" /></label>
-                    <label>Destination: <input type="text" id="hotDestination" /></label>
-                    <label>Amount: <input type="text" id="hotAmount" /></label>
+                    <label>Destination Address: <input type="text" id="hotDestination" /></label>
+                    <label>Amount to Send: <input type="text" id="hotAmount" /></label>
                     <input type="submit" onclick="getInfo()" />
                 </form>
     
@@ -322,8 +330,9 @@
             
             <section class="container" id="cold">
                 <h3 class="title">Cold Wallet</h3>
+                <p>Use these forms to sign blocks with your private keys.</p>
                 <form onsubmit="return false;">
-                    <h4>Generate a Block:</h4>
+                    <h4>Generate a State/Send Block:</h4>
                     <label>Private Key: <input type="text" id="coldPrivate" /></label>
                     <label>Proof of Work: <input type="text" id="coldPOW" /></label>
                     <label>Previous Hash (Frontier): <input type="text" id="coldPrevious" /></label>
@@ -362,71 +371,71 @@
             
             <section class="container" id="tools">
                 <h3 class="title">Tools</h3>
+                <p>Miscellaneous tools.</p>
+                <form onsubmit="return false;">
+                    <h4>Generate Private Key from Seed:</h4>
+                    <label>Seed: <input type="text" id="toolsSeed" /></label>
+                    <label>Index: <input type="text" id="toolsIndex" /></label>
+                    <input type="submit" onclick="genPrivate()" />
+                </form>
 
-<form onsubmit="return false;">
-    <h4>Generate Private Key from Seed:</h4>
-    <label>Seed: <input type="text" id="toolsSeed" /></label>
-    <label>Index: <input type="text" id="toolsIndex" /></label>
-    <input type="submit" onclick="genPrivate()" />
-</form>
+                <form onsubmit="return false;">
+                    <h4>Generate Public Key from Private Key:</h4>
+                    <label>Private Key: <input type="text" id="toolsPrivate" /></label>
+                    <input type="submit" onclick="genPublic()" />
+                </form>
 
-<form onsubmit="return false;">
-    <h4>Generate Public Key from Private Key:</h4>
-    <label>Private Key: <input type="text" id="toolsPrivate" /></label>
-    <input type="submit" onclick="genPublic()" />
-</form>
+                <form onsubmit="return false;">
+                    <h4>Generate Address from Public Key:</h4>
+                    <label>Public Key: <input type="text" id="toolsPublic" /></label>
+                    <input type="submit" onclick="genAddress()" />
+                </form>
 
-<form onsubmit="return false;">
-    <h4>Generate Address from Public Key:</h4>
-    <label>Public Key: <input type="text" id="toolsPublic" /></label>
-    <input type="submit" onclick="genAddress()" />
-</form>
+                <form onsubmit="return false;">
+                    <h4>Validate Proof of Work:</h4>
+                    <label>Hash: <input type="text" id="toolsHash" /></label>
+                    <label>POW: <input type="text" id="toolsPOW" /></label>
+                    <input type="submit" onclick="validate()" />
+                </form>
 
-<form onsubmit="return false;">
-    <h4>Validate Proof of Work:</h4>
-    <label>Hash: <input type="text" id="toolsHash" /></label>
-    <label>POW: <input type="text" id="toolsPOW" /></label>
-    <input type="submit" onclick="validate()" />
-</form>
-
-<script>
-async function genPrivate() {
-    var x = document.getElementById("toolsSeed");
-    var y = document.getElementById("toolsIndex");
-    toolsPriv = await nanocurrency.deriveSecretKey(x.value, parseInt(y.value));
-    document.getElementById("model-code").innerHTML = toolsPriv;
-    modal.style.display = "block";
-}
-async function genPublic() {
-    var x = document.getElementById("toolsPrivate");
-    toolsPub = await nanocurrency.derivePublicKey(x.value);
-    document.getElementById("model-code").innerHTML = toolsPub;
-    modal.style.display = "block";
-}
-async function genAddress() {
-    var x = document.getElementById("toolsPublic");
-    toolsAddress = await nanocurrency.deriveAddress(x.value);
-    document.getElementById("model-code").innerHTML = toolsAddress;
-    modal.style.display = "block";
-}
-var modal = document.getElementById('output');
-var span = document.getElementsByClassName("close")[0];
-span.onclick = function() {
-    modal.style.display = "none";
-}
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-async function validate() {
-    var x = document.getElementById("userHash").value;
-    var y = document.getElementById("userPOW").value;
-    userPriv = await nanocurrency.validateWork(x, y);
-    document.getElementById("model-code").innerHTML = userPriv;
-    modal.style.display = "block";
-}
-</script>
+                                <script>
+                async function genPrivate() {
+                    var x = document.getElementById("toolsSeed");
+                    var y = document.getElementById("toolsIndex");
+                    toolsPriv = await nanocurrency.deriveSecretKey(x.value, parseInt(y.value));
+                    document.getElementById("model-code").innerHTML = toolsPriv;
+                    modal.style.display = "block";
+                }
+                async function genPublic() {
+                    var x = document.getElementById("toolsPrivate");
+                    toolsPub = await nanocurrency.derivePublicKey(x.value);
+                    document.getElementById("model-code").innerHTML = toolsPub;
+                    modal.style.display = "block";
+                }
+                async function genAddress() {
+                    var x = document.getElementById("toolsPublic");
+                    toolsAddress = await nanocurrency.deriveAddress(x.value);
+                    document.getElementById("model-code").innerHTML = toolsAddress;
+                    modal.style.display = "block";
+                }
+                var modal = document.getElementById('output');
+                var span = document.getElementsByClassName("close")[0];
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+                async function validate() {
+                    var x = document.getElementById("userHash").value;
+                    var y = document.getElementById("userPOW").value;
+                    userPriv = await nanocurrency.validateWork(x, y);
+                    document.getElementById("model-code").innerHTML = userPriv;
+                    modal.style.display = "block";
+                }
+                </script>
 
             </section>
             
