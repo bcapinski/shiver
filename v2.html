@@ -1,7 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="author" content="Benjamin Capinski">
+    <meta name="description" content="A Nano web-wallet that supports offline signing on air-gapped computers.">
+    <title>Nano Cold Wallet | An offline signing application.</title>
+    <link rel="icon" href="">
+    <link rel="shortcut icon" href="">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <script src="https://wzrd.in/standalone/nanocurrency@latest"></script>
+    <script src="https://wzrd.in/standalone/big.js@latest"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
+    <div class="navbar">
+      <a class="off-canvas-toggle btn btn-link btn-action" href="#sidebar">
+        ☰
+      </a>
+      <a href="https://github.com/picturepan2/spectre" target="_blank" class="btn btn-primary">GitHub</a>
+    </div>
+    <footer>
+        <p><a href="https://github.com/bcapinski/nano-cold-wallet" target="_blank">GitHub</a> | Version 0.3.0<span class="version"></span></p>
+        <p>Designed and built with <span class="text-error">♥</span> by <a href="https://github.com/bcapinski" target="_blank">Benjamin Capinski</a>. Licensed under the <a target="_blank" href="https://github.com/bcapinski/nano-cold-wallet/blob/master/LICENSE" title="MIT License">MIT License</a>.</p>
+    </footer>
 </body>
+
+<style>
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+body {
+    position: relative;
+    margin: 0;
+    padding-bottom: 6rem;
+    min-height: 100%;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+footer {
+    color: #acb3c2;
+    padding: 1.5rem .5rem 0.5rem .5rem;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #f2f2f2;
+    text-align: center;
+}
+footer a {
+    color: #667189;
+}
+
+</style>
+
 </html>
