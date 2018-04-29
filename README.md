@@ -1,4 +1,4 @@
-# nano-cold-wallet
+# shiver
 A cold wallet for Nano.
 
 ## To-Do
