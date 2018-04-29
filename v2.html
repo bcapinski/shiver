@@ -21,7 +21,7 @@
             <h1>Shiver</h1>
             <h2>a <u>fast</u> & <u>secure</u> web-based Nano <u>light-wallet</u></h2>
             <p>
-                <a href="#" class="btn btn-primary btn-lg">About</a>
+                <a href="#guide" class="btn btn-primary btn-lg">Get Started</a>
                 <a href="" class="btn btn-primary btn-lg" download="shiver_wallet">Download</a>
             </p>
             <p class="text-gray">Latest version: 0.3.0</p>
@@ -41,15 +41,15 @@
                 <div class="column col-4 col-xs-12">
                     <div class="card text-center">
                         <div class="card-header"><span class="card-title">Light</span></div>
-                        <div class="card-body">All you need is one .html file to use Shiver - this web page.</div>
+                        <div class="card-body">All you need is one .html file to use Shiver - a minified version of this web page.</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <section class="section features bg-primary text-light text-center">
-        <div class="container grid-lg">
-            <h2>Introduction</h2>
+        <div class="container grid-md">
+            <h2>About</h2>
             <div class="columns">
                 <div class="column col-10 col-sm-12 col-mx-auto text-left">
                     <p class="text-secondary">Shiver Wallet is a web-based light wallet that permits offline signing of transactions. This allows you to keep your seed safe on an air-gapped computer, and only access it when you need to sign something. Your seed will never touch a computer that's connected to the Internet, dropping possible attack vectors to nearly zero.</p>
@@ -58,6 +58,34 @@
                 <div class="column col-10 col-sm-12 col-mx-auto">
                     <a href="" class="btn btn-lg" download="shiver-wallet">Download Shiver Wallet</a>
                 </div>
+            </div>
+        </div>
+    </section>
+    <section class="section guide text-center" id="guide">
+        <div class="container grid-md">
+            <h2>Guide</h2>
+            <div class="column col-10 col-sm-12 col-mx-auto text-left">
+                <p>I've tried to make the process of sending and receiving Nano as painless as possible and the instructions clear.</p>
+                <ol>
+                    <li>Get a <a href="https://api.nanode.co">Nanode API key.</a> You'll need it to gather the data from the network and send your signed block.</li>
+                    <li><a href="" download>Download this page</a>. It's entirely self-contained, so all you need is your download.html file. Transfer it to a recently-formatted flash drive and for maximum security do it on a new operating system/virtual machine.</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+    <section class="section key bg-secondary text-center">
+        <div class="container grid-sm">
+            <h2>Nanode API Key</h2>
+            <div class="column col-10 col-sm-12 col-mx-auto text-left">
+                
+            </div>
+        </div>
+    </section>
+    <section class="section wallet text-center">
+        <div class="container grid-lg">
+            <h2>Wallet</h2>
+            <div class="column col-10 col-sm-12 col-mx-auto text-left">
+                
             </div>
         </div>
     </section>
@@ -129,11 +157,11 @@
         margin-bottom: 0;
     }
     
-    .features {padding: 4.5rem .5rem;}
+    .features, .guide, .key, .wallet {padding: 4.5rem .5rem;}
     
-    .features .column {padding: .4rem;}
+    .features .column, .guide .column, .key .column, .wallet .column {padding: .4rem;}
     
-    .features .text-secondary {
+    .features .text-secondary, .guide p, .key p, .wallet p {
         text-indent: 2rem;
         text-align: justify;
         text-justify: auto;
