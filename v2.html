@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -13,51 +14,141 @@
     <script src="https://wzrd.in/standalone/big.js@latest"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
+
 <body>
-    <div class="navbar">
-      <a class="off-canvas-toggle btn btn-link btn-action" href="#sidebar">
-        ☰
-      </a>
-      <a href="https://github.com/picturepan2/spectre" target="_blank" class="btn btn-primary">GitHub</a>
-    </div>
-    <footer>
+    <section class="bg-gray">
+        <div id="overview" class="hero container grid-lg text-center">
+            <h1>Shiver Wallet</h1>
+            <h2>a <u>fast</u> & <u>secure</u> web-based Nano <u>light-wallet</u></h2>
+            <p>
+                <a href="#" class="btn btn-primary btn-lg">About</a>
+                <a href="" class="btn btn-primary btn-lg" download="shiver_wallet">Download</a>
+            </p>
+            <p class="text-gray">Latest version: 0.3.0</p>
+            <div class="columns">
+                <div class="column col-4 col-xs-12">
+                    <div class="card text-center">
+                        <div class="card-header"><span class="card-title">Fast</span></div>
+                        <div class="card-body">Shiver streamlines the offline signing process, allowing ease of use.</div>
+                    </div>
+                </div>
+                <div class="column col-4 col-xs-12">
+                    <div class="card text-center">
+                        <div class="card-header"><span class="card-title">Secure</span></div>
+                        <div class="card-body">Your seed will never touch a computer connected to the Internet.</div>
+                    </div>
+                </div>
+                <div class="column col-4 col-xs-12">
+                    <div class="card text-center">
+                        <div class="card-header"><span class="card-title">Light</span></div>
+                        <div class="card-body">All you need is one .html file to use Shiver - this web page.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section features bg-primary text-light text-center">
+        <div class="container grid-lg">
+            <h2>Introduction</h2>
+            <div class="columns">
+                <div class="column col-10 col-sm-12 col-mx-auto text-left">
+                    <p class="text-secondary">Shiver Wallet is a web-based light wallet that permits offline signing of transactions. This allows you to keep your seed safe on an air-gapped computer, and only access it when you need to sign something. Your seed will never touch a computer that's connected to the Internet, dropping possible attack vectors to nearly zero.</p>
+                    <p class="text-secondary">Simply download a copy of this webpage onto a flashdrive (You should only need one file, download.html. It's completely self contained). Use a device connected to the internet to gather the data requried for a state/send block. Transfer it to your air-gapped computer and sign the transaction using your private key (theres a seed --> private key tool at the bottom of the page), then send it on the Internet-connected device.</p>
+                </div>
+                <div class="column col-10 col-sm-12 col-mx-auto">
+                    <a href="" class="btn btn-lg" download="shiver-wallet">Download Shiver Wallet</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="bg-gray">
         <p><a href="https://github.com/bcapinski/nano-cold-wallet" target="_blank">GitHub</a> | Version 0.3.0<span class="version"></span></p>
         <p>Designed and built with <span class="text-error">♥</span> by <a href="https://github.com/bcapinski" target="_blank">Benjamin Capinski</a>. Licensed under the <a target="_blank" href="https://github.com/bcapinski/nano-cold-wallet/blob/master/LICENSE" title="MIT License">MIT License</a>.</p>
     </footer>
 </body>
 
 <style>
-html {
-    height: 100%;
-    box-sizing: border-box;
-}
-body {
-    position: relative;
-    margin: 0;
-    padding-bottom: 6rem;
-    min-height: 100%;
-}
+    html {height: 100%;}
+    body {
+        position: relative;
+        margin: 0;
+        padding-bottom: 6rem;
+        min-height: 100%;
+    }
 
-*,
-*:before,
-*:after {
-    box-sizing: inherit;
-}
+    .hero {
+        padding-bottom: 2rem;
+        padding-top: 6rem;
+    }
 
-footer {
-    color: #acb3c2;
-    padding: 1.5rem .5rem 0.5rem .5rem;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: #f2f2f2;
-    text-align: center;
-}
-footer a {
-    color: #667189;
-}
-
+    .hero h1 {
+        color: #50596c;
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero h2 {
+        color: #5b657a;
+        font-size: .9rem;
+            font-weight: 400;
+        line-height: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero h2 u {
+        border-bottom: .1rem solid currentColor;
+        padding-bottom: .05rem;
+        text-decoration: none;
+    }
+    
+    .hero .column {padding: .4rem;}
+    
+    .hero .card {
+        background: 0 0;
+        border: 0;
+        color: #727e96;
+        padding: .5rem;
+    }
+    
+    .hero .card {
+        background: 0 0;
+        border: 0;
+        color: #727e96;
+        padding: .5rem;
+    }
+    
+    .hero .card .card-title {
+        color: #5755d9;
+        font-size: .9rem;
+        margin-bottom: 0;
+    }
+    
+    .hero .card .card-title {
+        color: #5755d9;
+        font-size: .9rem;
+        margin-bottom: 0;
+    }
+    
+    .features {padding: 4.5rem .5rem;}
+    
+    .features .column {padding: .4rem;}
+    
+    .features .text-secondary {
+        text-indent: 2rem;
+        text-align: justify;
+        text-justify: auto;
+    }
+    
+    footer {
+        color: #999;
+        padding: 1.5rem .5rem 0.5rem .5rem;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        text-align: center;
+    }
+    footer a, a:hover, a:active, a:focus {color: #778; text-decoration: underline;}
 </style>
 
 </html>
