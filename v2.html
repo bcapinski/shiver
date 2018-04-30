@@ -159,8 +159,17 @@
         line-height: normal;
     }
     
-    .dropdown .dropdown-toggle:hover+.menu, .dropdown .menu:hover, .dropdown.active .menu:hover {display: block;}
-    .dropdown .dropdown-toggle:hover+.menu, {display: none;}
+    .dropdown-toggle:focus ~ .menu {display: none !important;}
+    .dropdown-toggle:hover ~ .menu, .dropdown .menu:hover {display: block !important;}
+
+    .dropdown-toggle::after {
+        content: '';
+        display: block;
+        position: relative;
+        width: 130%;
+        height: 75%;
+        left: -15%;
+    }
     
     .menu .menu-item>a:focus, .menu .menu-item>a:hover {
         background: #f1f1fc;
