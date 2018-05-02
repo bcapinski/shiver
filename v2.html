@@ -17,6 +17,7 @@
 </head>
 
 <body>
+    
     <nav class="nav-container">
         <div class="container grid-md navbar">
         <section class="navbar-section">
@@ -28,17 +29,18 @@
         <section class="navbar-section">
             <a href="#" class="btn btn-link hide-xs">Github</a>
             <div class="dropdown">
-                <a href="#" class="btn btn-link dropdown-toggle mr-2">Wallet ⏷</a>
+                <a href="#" class="btn btn-link dropdown-toggle mr-2">Quick Links ⏷</a>
                 <ul class="menu">
-                    <li class="menu-item"><a href="#">Guide</a></li>
-                    <li class="menu-item"><a href="#">Send and Receive</a></li>
-                    <li class="menu-item"><a href="#">Tools</a></li>
+                    <li class="menu-item"><a href="#guide">Guide</a></li>
+                    <li class="menu-item"><a href="#wallet">Wallet</a></li>
+                    <li class="menu-item"><a href="#tools">Tools</a></li>
                 </ul>
             </div>
             <a href="#" class="btn btn-primary ml-1">Download</a>
         </section>
         </div>
     </nav>
+    
     <header class="bg-gray">
         <div id="overview" class="hero container grid-md text-center">
             <h1>Shiver</h1>
@@ -70,6 +72,7 @@
             </div>
         </div>
     </header>
+    
     <section class="section features bg-primary text-light text-center">
         <div class="container grid-md">
             <h2>About</h2>
@@ -96,6 +99,7 @@
             </div>
         </div>
     </section>
+    
     <section class="section key bg-secondary text-center">
         <div class="container grid-sm">
             <h2>Nanode API Key</h2>
@@ -104,19 +108,20 @@
             </div>
         </div>
     </section>
+    
     <section class="section wallet text-center" id="wallet">
         <div class="container grid-lg">
             <h2>Wallet</h2>
             <div class="column col-10 col-sm-12 col-mx-auto text-left">
                 <p>Simply download a copy of this webpage onto a flashdrive (You should only need one file, download.html. It's completely self contained). Use a device connected to the internet to gather the data requried for a state/send block.</p>
-                <div class="divider"></div>
-                <h4>Create a State Block:</h4>
-                <span class="text-gray">&emsp; *requires a Nanode Node API key</span>
+                <div class="divider" style="margin-bottom: 1rem;"></div>
+                <h4>Generate State Block Data Automatically:</h4>
+                <span class="text-gray"><i>&emsp; *requires a Nanode Node API key</i></span>
                 <div class="columns">
                     <div class="column col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <button class="btn btn-primary float-right">Create</button>
+                                <button class="btn btn-primary float-right">Generate</button>
                                 <div class="card-title h5">Send Transaction</div>
                                 <div class="card-subtitle text-gray">Create a send/state block.</div>
                             </div>
@@ -130,7 +135,7 @@
                     <div class="column col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <button class="btn btn-primary float-right">Create</button>
+                                <button class="btn btn-primary float-right">Generate</button>
                                 <div class="card-title h5">Recieve Transaction</div>
                                 <div class="card-subtitle text-gray">Earth's Mightiest Heroes</div>
                             </div>
@@ -141,9 +146,66 @@
                     </div>
                 </div>
                 <div class="divider" style="margin-bottom: 1rem;"></div>
+                <h4>Process a Block:</h4>
+                <span class="text-gray"><i>&emsp; *requires a Nanode Node API key</i></span>
+                <div class="columns">
+                    <div class="column col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <button class="btn btn-primary float-right">Process</button>
+                                <div class="card-title h5">Broadcast a Block</div>
+                                <div class="card-subtitle text-gray">Broadcast a block to the Nano network.</div>
+                            </div>
+                            <div class="card-body">
+                                After generating the information for a block and then signing it, input it here to have it broadcasted to the Nano block-lattice. It will complete the action embedded into the block.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="divider" style="margin-bottom: 1rem;"></div>
+                <h4>Create & Sign Block Offline:</h4>
+                <span class="text-gray"><i>&emsp; *use this on offline computer</i></span>
+                <div class="columns">
+                    <div class="column col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <button class="btn btn-primary float-right">Sign</button>
+                                <div class="card-title h5">Send Block</div>
+                                <div class="card-subtitle text-gray">Create a send/state block.</div>
+                            </div>
+                            <div class="card-body">
+                                Simply download a copy of this webpage onto a flashdrive.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divider-vert hide-sm" data-content="OR"></div>
+                    <div class="divider text-center show-sm divfix" data-content="OR"></div>
+                    <div class="column col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <button class="btn btn-primary float-right">Sign</button>
+                                <div class="card-title h5">Recieve Block</div>
+                                <div class="card-subtitle text-gray">Earth's Mightiest Heroes</div>
+                            </div>
+                            <div class="card-body">
+                                Empower every person and every organization on the planet to achieve more.
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+    
+    <section class="section key text-center">
+        <div class="container grid-sm">
+            <h2>Tools</h2>
+            <div class="column col-10 col-sm-12 col-mx-auto text-left">
+                
+            </div>
+        </div>
+    </section>
+    
     <footer class="bg-gray">
         <p><a href="https://github.com/bcapinski/nano-cold-wallet" target="_blank">GitHub</a> | Version 0.3.0<span class="version"></span></p>
         <p>Designed and built with <span class="text-error">♥</span> by <a href="https://github.com/bcapinski" target="_blank">Benjamin Capinski</a>. Licensed under the <a target="_blank" href="https://github.com/bcapinski/nano-cold-wallet/blob/master/LICENSE" title="MIT License">MIT License</a>.</p>
@@ -169,6 +231,7 @@
         top: 0;
         background-color: #fff;
         box-shadow: rgba(69, 77, 93, 0.3) 0px 0.05rem 0.2rem;
+        z-index: 100;
     }
     
     .navbar {
