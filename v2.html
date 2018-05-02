@@ -387,7 +387,7 @@
                         </div>
                     </form>
                 </div>
-                <p id="model-code"></p>
+                <code id="model-code"></code>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" onclick="gatherSend()">Generate</button>
@@ -399,23 +399,24 @@
     <script>
         var nodeKey = document.getElementById('nodeKey');
         
-        var hotAPI = document.getElementById('g-api').value;
-        var hotAccount = document.getElementById('g-acc').value;
-        var hotDestination = document.getElementById('g-des').value;
-        var hotAmount = document.getElementById('g-amount').value;
+        var sendAPI = document.getElementById('g-api');
+        var hotAccount = document.getElementById('g-acc');
+        var hotDestination = document.getElementById('g-des');
+        var hotAmount = document.getElementById('g-amount');
         var multNANO = Big('1000000000000000000000000000000');
         var divNANO = Big('0.000000000000000000000000000001');
         
+        nodeKey.addEventListener("keyup", function(){sendAPI.value = nodeKey.value;});
         async function gatherSend() {
             var rpc = axios.create({
                 baseURL: 'https://api.nanode.co',
                 headers: {
-                    Authorization: hotAPI
+                    Authorization: sendAPI.value
                 }
             })
             var info = await rpc.post('/', {
                 action: 'account_info',
-                account: hotAccount,
+                account: hotAccount.value,
                 count: 1
             })
             var work = await rpc.post('/', {
@@ -424,13 +425,12 @@
             })
             var rep = await rpc.post('/', {
                 action: 'account_representative',
-                account: hotAccount
+                account: hotAccount.value
             })
             hotBalance = Big(Big(info.data.balance).times(divNANO));
-            hotBalance = hotBalance.minus(hotAmount);
+            hotBalance = hotBalance.minus(hotAmount.value);
             hotBalance = Big(hotBalance.times(multNANO)).toFixed();
-            document.getElementById('model-code').innerHTML = 'success';
-            //document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + hotBalance + "\nDestination Address:\n" + hotDestination;
+            document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + hotBalance + "\nDestination Address:\n" + hotDestination.value;
         }
     </script>
 </body>
