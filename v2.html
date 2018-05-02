@@ -255,7 +255,7 @@
                     <div class="column col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <button class="btn btn-primary float-right">Gather</button>
+                                <a class="btn btn-primary float-right" href="#gather-send">Gather</a>
                                 <div class="card-title h5">Send Data</div>
                                 <div class="card-subtitle text-gray">Gather data for a state block.</div>
                             </div>
@@ -337,7 +337,6 @@
         <p><a href="https://github.com/bcapinski/nano-cold-wallet" target="_blank">GitHub</a> | Version 0.3.0<span class="version"></span></p>
         <p>Designed and built with <span class="text-error">♥</span> by <a href="https://github.com/bcapinski" target="_blank">Benjamin Capinski</a>. Licensed under the <a target="_blank" href="https://github.com/bcapinski/nano-cold-wallet/blob/master/LICENSE" title="MIT License">MIT License</a>.</p>
         <p>Icons made by <a href="https://www.flaticon.com/authors/icon-works" title="Icon Works">Icon Works</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>.<p>
-        <a href="#gather-send">1</a>
     </footer>
     <a href="#close" class="d-none" id="close"></a>
     <div class="modal modal-lg" id="gather-send">
@@ -355,7 +354,7 @@
                                 <label class="form-label">Nanode API Key:</label>
                             </div>
                             <div class="col-7 col-sm-12">
-                                <input class="form-input" type="text" id="hotAccount" />
+                                <input class="form-input" type="text" id="g-api" />
                             </div>
                         </div>
                         <br />
@@ -364,7 +363,7 @@
                                 <label class="form-label">Your Account:</label>
                             </div>
                             <div class="col-7 col-sm-12">
-                                <input class="form-input" type="text" id="hotAccount" />
+                                <input class="form-input" type="text" id="g-acc" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -372,7 +371,7 @@
                                 <label class="form-label">Destination Address:</label>
                             </div>
                             <div class="col-7 col-sm-12">
-                                <input class="form-input" type="text" id="hotDestination" />
+                                <input class="form-input" type="text" id="g-des" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -380,11 +379,12 @@
                                 <label class="form-label">Amount to Send:</label>
                             </div>
                             <div class="col-7 col-sm-12">
-                                <input class="form-input" type="text" id="hotAmount" />
+                                <input class="form-input" type="text" id="g-amount" />
                             </div>
                         </div>
                     </form>
                 </div>
+                <p id="model-code"></p>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" onclick="getInfo()">Generate</button>
@@ -396,7 +396,38 @@
     <script>
         var nodeKey = document.getElementById('nodeKey');
         
+        var hotAPI = document.getElementById('g-api').value;
+        var hotAccount = document.getElementById('g-acc').value;
+        var hotDestination = document.getElementById('g-des').value;
+        var hotAmount = document.getElementById('g-amount').value;
         
+        async function getInfo() {
+            var multNANO = Big('1000000000000000000000000000000');
+            var divNANO = Big('0.000000000000000000000000000001');
+            var rpc = axios.create({
+                baseURL: 'https://api.nanode.co',
+                headers: {
+                    Authorization: hotAPI
+                }
+            })
+            var info = await rpc.post('/', {
+                action: 'account_info',
+                account: hotAccount,
+                count: 1
+            })
+            var work = await rpc.post('/', {
+                action: 'work_generate',
+                hash: info.data.frontier
+            })
+            var rep = await rpc.post('/', {
+                action: 'account_representative',
+                account: hotAccount
+            })
+            hotBalance = Big(Big(info.data.balance).times(divNANO));
+            hotBalance = hotBalance.minus(hotAmount);
+            hotBalance = Big(hotBalance.times(multNANO)).toFixed();
+            document.getElementById("model-code").innerHTML = "success";
+            //document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + hotBalance + "\nDestination Address:\n" + hotDestination;
     </script>
 </body>
 
