@@ -237,7 +237,7 @@
             <h2>Nanode API Key</h2>
             <div class="column col-10 col-sm-12 col-mx-auto text-left">
                 <p>Instructions coming soon.</p>
-                <label>Nanode API Key: <input class="form-input" type="text" id="nanodeAPI" placeholder="###aa###-####-##a#-aaaa-####a#a####a"/></label>
+                <label>Nanode API Key: <input class="form-input" type="text" id="nodeKey" placeholder="###aa###-####-##a#-aaaa-####a#a####a"/></label>
                 
             </div>
         </div>
@@ -337,21 +337,65 @@
         <p><a href="https://github.com/bcapinski/nano-cold-wallet" target="_blank">GitHub</a> | Version 0.3.0<span class="version"></span></p>
         <p>Designed and built with <span class="text-error">♥</span> by <a href="https://github.com/bcapinski" target="_blank">Benjamin Capinski</a>. Licensed under the <a target="_blank" href="https://github.com/bcapinski/nano-cold-wallet/blob/master/LICENSE" title="MIT License">MIT License</a>.</p>
         <p>Icons made by <a href="https://www.flaticon.com/authors/icon-works" title="Icon Works">Icon Works</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>.<p>
+        <a href="#gather-send">1</a>
     </footer>
-    
-    <div class="modal modal-lg active">
-        <a href="#close" class="modal-overlay" aria-label="Close"></a>
+    <a href="#close" class="d-none" id="close"></a>
+    <div class="modal modal-lg" id="gather-send">
+        <a href="#gather-send" class="modal-overlay"></a>
         <div class="modal-container">
             <div class="modal-header">
-                <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
-                <div class="modal-title h5">Modal title</div>
-                
+                <a href="#close" class="btn btn-clear float-right"></a>
+                <div class="modal-title h3">Gather Data (state/send)</div>
             </div>
-            
+            <div class="modal-body">
+                <div class="content">
+                    <form class="form-horizontal" onsubmit="return false;">
+                        <div class="form-group">
+                            <div class="col-4 col-sm-12">
+                                <label class="form-label">Nanode API Key:</label>
+                            </div>
+                            <div class="col-7 col-sm-12">
+                                <input class="form-input" type="text" id="hotAccount" />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <div class="col-4 col-sm-12">
+                                <label class="form-label">Your Account:</label>
+                            </div>
+                            <div class="col-7 col-sm-12">
+                                <input class="form-input" type="text" id="hotAccount" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-4 col-sm-12">
+                                <label class="form-label">Destination Address:</label>
+                            </div>
+                            <div class="col-7 col-sm-12">
+                                <input class="form-input" type="text" id="hotDestination" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-4 col-sm-12">
+                                <label class="form-label">Amount to Send:</label>
+                            </div>
+                            <div class="col-7 col-sm-12">
+                                <input class="form-input" type="text" id="hotAmount" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="getInfo()">Generate</button>
+                <a href="#close" class="btn btn-link">Close</a>
+            </div>
         </div>
     </div>
     
     <script>
+        var nodeKey = document.getElementById('nodeKey');
+        
         
     </script>
 </body>
