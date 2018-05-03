@@ -434,6 +434,7 @@
                 return false;
             }
             
+            // DOES NOT WORK
             hotBalance = Big(Big(info.data.balance).times(divNANO));
             hotBalance = hotBalance.minus(gsAmount.value);
             hotBalance = Big(hotBalance.times(multNANO)).toFixed();
