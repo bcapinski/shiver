@@ -236,7 +236,7 @@
         <div class="container grid-sm">
             <h2>Nanode API Key</h2>
             <div class="column col-10 col-sm-12 col-mx-auto text-left">
-                <p>Instructions coming soon.</p>
+                <p>Instructions coming soon. You can <a href="https://nano.org/en/explore/processblock">process a block here</a>.</p>
                 <label>Nanode API Key: <input class="form-input" type="text" id="nodeKey" placeholder="###aa###-####-##a#-aaaa-####a#a####a"/></label>
                 
             </div>
@@ -252,7 +252,7 @@
                 <h4>Generate State Block Data Automatically:</h4>
                 <span class="text-gray"><i>&emsp; *requires a Nanode Node API key</i></span>
                 <div class="columns">
-                    <div class="column col-sm-12">
+                    <div class="column col-md-12">
                         <div class="card">
                             <div class="card-header">
                                 <a class="btn btn-primary float-right" href="#gather-send">Gather</a>
@@ -262,9 +262,9 @@
                             <div class="card-body">Gathers representative address, Frontier and Proof of Work using the Nanode Node API along with the resulting balance and the destination address.</div>
                         </div>
                     </div>
-                    <div class="divider-vert hide-sm" data-content="OR"></div>
-                    <div class="divider text-center show-sm divfix" data-content="OR"></div>
-                    <div class="column col-sm-12">
+                    <div class="divider-vert hide-md" data-content="OR"></div>
+                    <div class="divider text-center show-md divfix" data-content="OR"></div>
+                    <div class="column col-md-12">
                         <div class="card">
                             <div class="card-header">
                                 <button class="btn btn-primary float-right">Gather</button>
@@ -296,7 +296,7 @@
                 <h4>Create & Sign Block Offline:</h4>
                 <span class="text-gray"><i>&emsp; *use this on offline computer</i></span>
                 <div class="columns">
-                    <div class="column col-sm-12">
+                    <div class="column col-md-12">
                         <div class="card">
                             <div class="card-header">
                                 <button class="btn btn-primary float-right">Sign</button>
@@ -306,9 +306,9 @@
                             <div class="card-body">Upload your data and sign it with your private key to create a send-linked state block.</div>
                         </div>
                     </div>
-                    <div class="divider-vert hide-sm" data-content="OR"></div>
-                    <div class="divider text-center show-sm divfix" data-content="OR"></div>
-                    <div class="column col-sm-12">
+                    <div class="divider-vert hide-md" data-content="OR"></div>
+                    <div class="divider text-center show-md divfix" data-content="OR"></div>
+                    <div class="column col-md-12">
                         <div class="card">
                             <div class="card-header">
                                 <button class="btn btn-primary float-right">Sign</button>
@@ -338,7 +338,24 @@
         <p>Designed and built with <span class="text-error">♥</span> by <a href="https://github.com/bcapinski" target="_blank">Benjamin Capinski</a>. Licensed under the <a target="_blank" href="https://github.com/bcapinski/nano-cold-wallet/blob/master/LICENSE" title="MIT License">MIT License</a>.</p>
         <p>Icons made by <a href="https://www.flaticon.com/authors/icon-works" title="Icon Works">Icon Works</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>.<p>
     </footer>
-    <a href="#close" class="d-none" id="close"></a>
+    
+    <div class="modal" id="result">
+        <a href="#close" class="modal-overlay"></a>
+        <div class="modal-container">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right"></a>
+                <div class="modal-title h3">Result:</div>
+            </div>
+            <div class="modal-body">
+                <div class="content" id="result-content">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#close" class="btn btn-link">Close</a>
+            </div>
+        </div>
+    </div>
+    
     <div class="modal modal-lg" id="gather-send">
         <a href="#gather-send" class="modal-overlay"></a>
         <div class="modal-container">
@@ -384,7 +401,7 @@
                         </div>
                     </form>
                 </div>
-                <code id="model-code"></code>
+                <pre><code id="model-code"></code></pre>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" onclick="gatherSend()">Generate</button>
@@ -398,12 +415,38 @@
         var multNANO = Big('1000000000000000000000000000000');
         var divNANO = Big('0.000000000000000000000000000001');
         
+        // Nanode API Error Helpers
+        var keyErrors = {
+            400: 'Error 400: Contact me with instructions to replicate.',
+            401: 'Error 401: Invalid API key.',
+            402: 'Error 402: Insufficient Nanode account balance.',
+            403: 'Error 403: Contact me with instructions to replicate.',
+            500: 'Error 500: Contact me with instructions to replicate.',
+            503: 'Error 400: Try again, then contact me with instructions to replicate.'
+        };
+        
         // Automatically Duplicate API Key
         var nodeKey = document.getElementById('nodeKey');
         nodeKey.addEventListener("keyup", function(){sendAPI.value = nodeKey.value;});
         
-        // Gather sState/Send Block Data
+        // Create A Response
+        function createResponse(type, content) {
+            if (type == 'HTML') {
+                var output = content;
+            }
+            if (type == 'keyError') {
+                var output = '<h5 class="text-error">Error:</h5><div class="toast toast-error">' + keyErrors[content] + '</div>';
+            }
+            var r = document.getElementById('result-content');
+            r.innerHTML = output;
+        }
+        
+        // Gather State/Send Block Data
         async function gatherSend() {
+            // Switch Modals
+            createResponse('HTML', '<div class="loading loading-lg"></div>');
+            location.assign('#result');
+            
             // Validate Input:
             var gsKey = document.getElementById('gsKey');
             var gsAcc = document.getElementById('gsAcc');
@@ -416,29 +459,29 @@
             // Gather Block Data:
             try {var info = await rpc.post('/', {action: 'account_info', account: gsAcc.value, count: 1});}
             catch (error) {
-                console.log(error);
+                createResponse('keyError', error.response.status);
                 return false;
             }
             
             // Generate Proof of Work
             try {var work = await rpc.post('/', {action: 'work_generate', hash: info.data.frontier});}
             catch (error) {
-                console.log(error);
+                createResponse('keyError', error.response.status);
                 return false;
             }
             
             // Grab Account Representative
             try {var rep = await rpc.post('/', {action: 'account_representative', account: gsAcc.value});}
             catch (error) {
-                console.log(error);
+                createResponse('keyError', error.response.status);
                 return false;
             }
             
-            // DOES NOT WORK
-            hotBalance = Big(Big(info.data.balance).times(divNANO));
-            hotBalance = hotBalance.minus(gsAmount.value);
-            hotBalance = Big(hotBalance.times(multNANO)).toFixed();
-            document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + hotBalance + "\nDestination Address:\n" + gsDes.value;
+            // 
+            var gsBal = Big(Big(info.data.balance).times(divNANO));
+            gsBal = gsBal.minus(gsAmount.value);
+            gsBal = Big(gsBal.times(multNANO)).toFixed();
+            document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + gsBal + "\nDestination Address:\n" + gsDes.value;
         }
     </script>
 </body>
