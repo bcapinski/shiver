@@ -267,7 +267,7 @@
                     <div class="column col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <button class="btn btn-primary float-right">Gather</button>
+                                <a class="btn btn-primary float-right" href="#gather-receive">Gather</a>
                                 <div class="card-title h5">Recieve Data</div>
                                 <div class="card-subtitle text-gray">Gather data for a state block.</div>
                             </div>
@@ -365,7 +365,7 @@
             </div>
             <div class="modal-body">
                 <div class="content">
-                    <form class="form-horizontal" onsubmit="return false;">
+                    <form class="form-horizontal">
                         <div class="form-group">
                             <div class="col-4 col-sm-12">
                                 <label class="form-label">Nanode API Key:</label>
@@ -401,10 +401,46 @@
                         </div>
                     </form>
                 </div>
-                <pre><code id="model-code"></code></pre>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" onclick="gatherSend()">Generate</button>
+                <a href="#close" class="btn btn-link">Close</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal modal-lg" id="gather-receive">
+        <a href="#gather-receive" class="modal-overlay"></a>
+        <div class="modal-container">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right"></a>
+                <div class="modal-title h3">Gather Data (state/receive)</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-4 col-sm-12">
+                                <label class="form-label">Nanode API Key:</label>
+                            </div>
+                            <div class="col-7 col-sm-12">
+                                <input class="form-input" type="text" id="grKey" />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <div class="col-4 col-sm-12">
+                                <label class="form-label">Hash:</label>
+                            </div>
+                            <div class="col-7 col-sm-12">
+                                <input class="form-input" type="text" id="grHash" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="gatherReceive()">Generate</button>
                 <a href="#close" class="btn btn-link">Close</a>
             </div>
         </div>
@@ -427,15 +463,25 @@
         
         // Automatically Duplicate API Key
         var nodeKey = document.getElementById('nodeKey');
-        nodeKey.addEventListener("keyup", function(){sendAPI.value = nodeKey.value;});
-        
+        nodeKey.addEventListener("keyup", function(){document.getElementById('gsKey').value = nodeKey.value;});
+        nodeKey.addEventListener("keyup", function(){document.getElementById('grKey').value = nodeKey.value;});
+
         // Create A Response
         function createResponse(type, content) {
+            var output='';
             if (type == 'HTML') {
-                var output = content;
+                output = content;
             }
             if (type == 'keyError') {
-                var output = '<h5 class="text-error">Error:</h5><div class="toast toast-error">' + keyErrors[content] + '</div>';
+                output = '<h5 class="text-error">Error:</h5><div class="toast toast-error">' + keyErrors[content] + '</div>';
+            }
+            if (type == 'object') {
+                output = '<h5>An object to copy/paste:</h5><pre class="code"><code>';
+                output += JSON.stringify(content);
+                output += '</code></pre><h5>List of keys/values:</h5>';
+                for (i = 0; i < Object.keys(content).length; i++) {
+                    output += Object.keys(content)[i] + ':<br /><code>' + content[Object.keys(content)[i]] + '</code><br />';
+                }
             }
             var r = document.getElementById('result-content');
             r.innerHTML = output;
@@ -456,7 +502,7 @@
             // Initiate Axios:
             var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: gsKey.value}});
             
-            // Gather Block Data:
+            // Gather Account Data:
             try {var info = await rpc.post('/', {action: 'account_info', account: gsAcc.value, count: 1});}
             catch (error) {
                 createResponse('keyError', error.response.status);
@@ -477,11 +523,40 @@
                 return false;
             }
             
-            // 
+            // Calculate Balance
             var gsBal = Big(Big(info.data.balance).times(divNANO));
             gsBal = gsBal.minus(gsAmount.value);
             gsBal = Big(gsBal.times(multNANO)).toFixed();
-            document.getElementById("model-code").innerHTML = "Proof of Work:\n" + work.data.work + "\nPrevious Hash:\n" + info.data.frontier + "\nRepresentative:\n" + rep.data.representative + "\nResulting Balance:\n" + gsBal + "\nDestination Address:\n" + gsDes.value;
+            
+            // Create Response
+            createResponse('object', {
+                'Proof of Work': work.data.work,
+                'Previous Block Hash': info.data.frontier,
+                'Representative': rep.data.representative,
+                'Resulting Balance': gsBal,
+                'Destination': gsDes.value
+            });            
+        }
+        async function gatherReceive() {
+            // Switch Modals
+            createResponse('HTML', '<div class="loading loading-lg"></div>');
+            location.assign('#result');
+            
+            // Validate Input:
+            var grKey = document.getElementById('grKey');
+            var grHash = document.getElementById('grHash');
+            
+            // Initiate Axios:
+            var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: grKey.value}});
+            
+            // Gather Block Data:
+            try {var block = await rpc.post('/', {action: 'block', hash: grHash.value});}
+            catch (error) {
+                createResponse('keyError', error.response.status);
+                return false;
+            }
+            
+            createResponse('HTML', JSON.stringify(block));
         }
     </script>
 </body>
