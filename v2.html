@@ -282,7 +282,7 @@
                     <div class="column col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <button class="btn btn-primary float-right">Process</button>
+                                <a href="#process" class="btn btn-primary float-right">Process</a>
                                 <div class="card-title h5">Broadcast</div>
                                 <div class="card-subtitle text-gray">Broadcast a block to the Nano network.</div>
                             </div>
@@ -446,6 +446,43 @@
         </div>
     </div>
     
+    <div class="modal modal-lg" id="process">
+        <a href="#process" class="modal-overlay"></a>
+        <div class="modal-container">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right"></a>
+                <div class="modal-title h3">Gather Data (state/receive)</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-4 col-sm-12">
+                                <label class="form-label">Nanode API Key:</label>
+                            </div>
+                            <div class="col-7 col-sm-12">
+                                <input class="form-input" type="text" id="key" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-4 col-sm-12">
+                                <label class="form-label">Block to process:</label>
+                            </div>
+                            <div class="col-7 col-sm-12">
+                                <input class="form-input" type="text" id="block" />
+                            </div>
+                        </div>
+                    </form>
+                    <p>Remember to do this AFTER you sign your block.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="process()">Process</button>
+                <a href="#close" class="btn btn-link">Close</a>
+            </div>
+        </div>
+    </div>
+    
     <script>
         // Raw/Nano Conversion Helpers
         var multNANO = Big('1000000000000000000000000000000');
@@ -509,15 +546,15 @@
                 return false;
             }
             
-            // Generate Proof of Work
-            try {var work = await rpc.post('/', {action: 'work_generate', hash: info.data.frontier});}
+            // Grab Account Representative
+            try {var rep = await rpc.post('/', {action: 'account_representative', account: gsAcc.value});}
             catch (error) {
                 createResponse('keyError', error.response.status);
                 return false;
             }
             
-            // Grab Account Representative
-            try {var rep = await rpc.post('/', {action: 'account_representative', account: gsAcc.value});}
+            // Generate Proof of Work
+            try {var work = await rpc.post('/', {action: 'work_generate', hash: info.data.frontier});}
             catch (error) {
                 createResponse('keyError', error.response.status);
                 return false;
@@ -537,6 +574,7 @@
                 'Destination': gsDes.value
             });            
         }
+        
         async function gatherReceive() {
             // Switch Modals
             createResponse('HTML', '<div class="loading loading-lg"></div>');
@@ -549,14 +587,69 @@
             // Initiate Axios:
             var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: grKey.value}});
             
-            // Gather Block Data:
-            try {var block = await rpc.post('/', {action: 'block', hash: grHash.value});}
+            // Grab Block Data and Amount
+            try {var block = await rpc.post('/', {action: 'blocks_info', hashes: [grHash.value]});}
+            catch (error) {
+                createResponse('keyError', error.response.status);
+                return false;
+            }
+            var grAmount = block.data.blocks[grHash.value].amount;
+            block = JSON.parse(block.data.blocks[grHash.value].contents);
+            
+            // Gather Account Data:
+            try {var info = await rpc.post('/', {action: 'account_info', account: block.link_as_account, count: 1});}
             catch (error) {
                 createResponse('keyError', error.response.status);
                 return false;
             }
             
-            createResponse('HTML', JSON.stringify(block));
+            // Grab Account Representative
+            try {var rep = await rpc.post('/', {action: 'account_representative', account: block.link_as_account});}
+            catch (error) {
+                createResponse('keyError', error.response.status);
+                return false;
+            }
+            
+            // Generate Proof of Work
+            try {var work = await rpc.post('/', {action: 'work_generate', hash: info.data.frontier});}
+            catch (error) {
+                createResponse('keyError', error.response.status);
+                return false;
+            }
+                        
+            // Create Response
+            createResponse('object', {
+                'Proof of Work': work.data.work,
+                'Previous Block Hash': info.data.frontier,
+                'Representative': rep.data.representative,
+                'Resulting Balance': Big(Big(info.data.balance).plus(grAmount)).toFixed(),
+                'Block Hash': grHash.value
+            });  
+        }
+        
+        async function process() {
+            // Switch Modals
+            createResponse('HTML', '<div class="loading loading-lg"></div>');
+            location.assign('#result');
+            
+            // Validate Input:
+            var key = document.getElementById('key');
+            var block = document.getElementById('block');
+            
+            // Initiate Axios:
+            var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: grKey.value}});
+            
+            // Process Block
+            try {var hash = await rpc.post('/', {action: 'process', block: block});}
+            catch (error) {
+                createResponse('keyError', error.response.status);
+                return false;
+            }
+                        
+            // Create Response
+            createResponse('object', {
+                'Hash': hash.data.hash
+            });  
         }
     </script>
 </body>
