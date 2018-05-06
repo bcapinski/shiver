@@ -133,7 +133,7 @@
     
     .features .text-secondary, .guide p, .key p, .wallet p {text-indent: 2rem;}
     
-    .wallet .divfix {width: 70%; margin: 0.8rem auto;}
+    .wallet h4 {margin: 1rem auto 0.2rem auto;}
     
     footer {
         color: #999;
@@ -234,50 +234,53 @@
     
     <section class="section key bg-secondary text-center">
         <div class="container grid-sm">
-            <h2>Nanode API Key</h2>
+            <h2>Without a Nanode API Key</h2>
             <div class="column col-10 col-sm-12 col-mx-auto text-left">
-                <p>Instructions coming soon. You can <a href="https://nano.org/en/explore/processblock">process a block here</a>.</p>
-                <label>Nanode API Key: <input class="form-input" type="text" id="nodeKey" placeholder="###aa###-####-##a#-aaaa-####a#a####a"/></label>
-                
+                <p>Instructions coming soon. You can <a href="https://nano.org/en/explore/processblock">process a block here</a>.</p>                
             </div>
         </div>
     </section>
     
     <section class="section wallet text-center" id="wallet">
-        <div class="container grid-lg">
+        <div class="container grid-md">
             <h2>Wallet</h2>
-            <div class="column col-10 col-sm-12 col-mx-auto text-left">
-                <p>Simply download a copy of this webpage onto a flashdrive (You should only need one file, download.html. It's completely self contained). Use a device connected to the internet to gather the data requried for a state/send block.</p>
+            <div class="column col-mx-auto text-left">
+                <p>Simply download the minimised version of this webpage onto a flashdrive (You should only need one file, download.html. It's completely self contained). Use a device connected to the internet to gather the data requried for a state/send block.</p>
                 <div class="divider" style="margin-bottom: 1rem;"></div>
-                <h4>Generate State Block Data Automatically:</h4>
-                <span class="text-gray"><i>&emsp; *requires a Nanode Node API key</i></span>
+                
+                <h4>Step One:</h4>
+                <p class="text-gray"><i>*requires a Nanode Node API key</i></p>
                 <div class="columns">
-                    <div class="column col-md-12">
+                    <div class="column col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <a class="btn btn-primary float-right" href="#gather-send">Gather</a>
-                                <div class="card-title h5">Send Data</div>
-                                <div class="card-subtitle text-gray">Gather data for a state block.</div>
+                                <a class="btn btn-primary float-right ml-2" href="#gather-receive">Recieve</a>
+                                <a class="btn btn-primary float-right" href="#gather-send">Send</a>
+                                <div class="card-title h5">Gather Data</div>
+                                <div class="card-subtitle text-gray">Gather state block data</div>
                             </div>
                             <div class="card-body">Gathers representative address, Frontier and Proof of Work using the Nanode Node API along with the resulting balance and the destination address.</div>
                         </div>
                     </div>
-                    <div class="divider-vert hide-md" data-content="OR"></div>
-                    <div class="divider text-center show-md divfix" data-content="OR"></div>
+                </div>
+                
+                <h4>Step Two:</h4>
+                <p class="text-gray"><i>*use this on offline computer</i></p>
+                <div class="columns">
                     <div class="column col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <a class="btn btn-primary float-right" href="#gather-receive">Gather</a>
-                                <div class="card-title h5">Recieve Data</div>
-                                <div class="card-subtitle text-gray">Gather data for a state block.</div>
+                                <a href="#sign" class="btn btn-primary float-right">Sign</a>
+                                <div class="card-title h5">Sign Block</div>
+                                <div class="card-subtitle text-gray">Sign a state block offline</div>
                             </div>
-                            <div class="card-body">Gathers representative address, Frontier, Proof of Work and the hash of the highest pending block using the Nanode Node API along with the resulting balance.</div>
+                            <div class="card-body">Upload your data and sign it with your private key to create a send-linked state block.</div>
                         </div>
                     </div>
                 </div>
-                <div class="divider" style="margin-bottom: 1rem;"></div>
-                <h4>Process a Block:</h4>
-                <span class="text-gray"><i>&emsp; *requires a Nanode Node API key</i></span>
+                
+                <h4>Step Three:</h4>
+                <p class="text-gray"><i>*requires a Nanode Node API key</i></p>
                 <div class="columns">
                     <div class="column col-sm-12">
                         <div class="card">
@@ -292,33 +295,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="divider" style="margin-bottom: 1rem;"></div>
-                <h4>Create & Sign Block Offline:</h4>
-                <span class="text-gray"><i>&emsp; *use this on offline computer</i></span>
-                <div class="columns">
-                    <div class="column col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <button class="btn btn-primary float-right">Sign</button>
-                                <div class="card-title h5">Send Block</div>
-                                <div class="card-subtitle text-gray">Create a send/state block.</div>
-                            </div>
-                            <div class="card-body">Upload your data and sign it with your private key to create a send-linked state block.</div>
-                        </div>
-                    </div>
-                    <div class="divider-vert hide-md" data-content="OR"></div>
-                    <div class="divider text-center show-md divfix" data-content="OR"></div>
-                    <div class="column col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <button class="btn btn-primary float-right">Sign</button>
-                                <div class="card-title h5">Recieve Block</div>
-                                <div class="card-subtitle text-gray">Earth's Mightiest Heroes</div>
-                            </div>
-                            <div class="card-body">Upload your data and sign it with your private key to create a recieve-linked state block.</div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </section>
@@ -446,6 +423,44 @@
         </div>
     </div>
     
+    <div class="modal modal-lg" id="sign">
+        <a href="#process" class="modal-overlay"></a>
+        <div class="modal-container">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right"></a>
+                <div class="modal-title h3">Gather Data (state/receive)</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-4 col-sm-12">
+                                <label class="form-label">Private Key:</label>
+                            </div>
+                            <div class="col-7 col-sm-12">
+                                <input class="form-input" type="text" id="private" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-4 col-sm-12">
+                                <label class="form-label">Block to Sign:</label>
+                            </div>
+                            <div class="col-7 col-sm-12">
+                                <input class="form-input" type="text" id="object" />
+                            </div>
+                        </div>
+                    </form>
+                    <br />
+                    <p>Remember to use your private key, not your seed.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="sign()">Sign</button>
+                <a href="#close" class="btn btn-link">Close</a>
+            </div>
+        </div>
+    </div>
+    
     <div class="modal modal-lg" id="process">
         <a href="#process" class="modal-overlay"></a>
         <div class="modal-container">
@@ -473,6 +488,7 @@
                             </div>
                         </div>
                     </form>
+                    <br />
                     <p>Remember to do this AFTER you sign your block.</p>
                 </div>
             </div>
@@ -497,11 +513,6 @@
             500: 'Error 500: Contact me with instructions to replicate.',
             503: 'Error 400: Try again, then contact me with instructions to replicate.'
         };
-        
-        // Automatically Duplicate API Key
-        var nodeKey = document.getElementById('nodeKey');
-        nodeKey.addEventListener("keyup", function(){document.getElementById('gsKey').value = nodeKey.value;});
-        nodeKey.addEventListener("keyup", function(){document.getElementById('grKey').value = nodeKey.value;});
 
         // Create A Response
         function createResponse(type, content) {
@@ -567,6 +578,7 @@
             
             // Create Response
             createResponse('object', {
+                'Type': 'Send',
                 'Proof of Work': work.data.work,
                 'Previous Block Hash': info.data.frontier,
                 'Representative': rep.data.representative,
@@ -619,11 +631,30 @@
                         
             // Create Response
             createResponse('object', {
+                'Type': 'Receive',
                 'Proof of Work': work.data.work,
                 'Previous Block Hash': info.data.frontier,
                 'Representative': rep.data.representative,
                 'Resulting Balance': Big(Big(info.data.balance).plus(grAmount)).toFixed(),
                 'Block Hash': grHash.value
+            });  
+        }
+        
+        async function sign() {
+            // Switch Modals
+            createResponse('HTML', '<div class="loading loading-lg"></div>');
+            location.assign('#result');
+            
+            // Validate Input:
+            var key = document.getElementById('key');
+            var block = document.getElementById('block');
+                        
+            // Sign Block
+            
+                        
+            // Create Response
+            createResponse('object', {
+                '': ''
             });  
         }
         
