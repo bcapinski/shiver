@@ -8,23 +8,101 @@
         <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABqlBMVEUAAAAAAP+AgP9VVf9AQL9mZsxVVdVJSdtgYN9VVeNNTeZdXdFVVdVOTthZWdlcUtZbUttVVd1YWNdVVdhXV9tVVdxVVdhZU9lXV9pZU9tVVddZU9hXV9lXV9tYU9hVVdlWVthVVdlYVNlWVtpYVNdZVdhXVNtWVtdZVdhWVtlXVNpWVttYVdhXVNhYVdlXVNpWVtpWVthXVNlWVtpXVNhWVtlWVtlYVdpXVNpYVtpXVdlXVdpXVdlWVNlXVdpYVthXVdlYVtlWVNpYVthWVNlYVtlXVtpXVdhWVNhXVdlWVNlXVtlYVNhXVdlXVdlXVdlXVtpXVdlXVtpXVdlWVdpXVdlXVdhWVdlXVdlXVdlWVdlXVdlXVdpYVdhXVdlXVdlYVdlXVdlYVdhXVdlXVdlYVdlXVdlXVdlYVdpXVdlXVdlXVdlXVdpXVdlXVdlXVdlXVdpXVdlXVdlXVdlXVdhXVdlWVdlXVdlXVdlWVdlXVdlWVdlYVdlXVdlXVdlXVdlXVdlXVdlXVdhXVdlXVdlXVdlXVdlXVdlXVdlXVdlXVdlXVdlXVdn///9xysDaAAAAjHRSTlMAAQIDBAUGBwgJCgsMDRQZHB4gISMkJygpKy0uLzI0Njs8PT5AQkZHSEpMTU5PUVJTVlhZW19lZmducnV4eXt9foCCg4WGiYqLjZSVl5mcn6Soqq+xtbm6u7y9vr/AwcLDxMbHyMnKy8zP0dLT1djZ2tve4OHi4+Tl5ufp7O/x8vP09fb3+Pn6+/z9/oxgKq8AAAABYktHRI0bDOLVAAABvUlEQVQ4y7VTaVtSQRidi4CimVupKeUCoWYqKpVrVoilklu5VRLgLpUbIJIi4XIv3POjnZkLwkXwS4/vh5kz7znP865DiNq+fCN3W0T8D4Fx9a2BCUpHfTU5BSYR/p4z6XUYsdpbZMFUPyG18+A2V0XI8Ee1oBKb7Gr9DWw2MxSSNTdkV6dAHmODY21UVIgQdETobEliz7NqrKmrCMJQt4JDji37SCzAqxb48VnC3nPlUTgUBXz6TIHuGIgM6lNZ6Mdp7nsdaUHLH+qwa1P8i11Ikz+ApTpF8OgrsDonY8ek8G8AF6WsB4g7H0bEEsclgjaBmLYhW7jA/JM+qRUNR3EqJY4Qe1/Mm9fnyu5o2XQCkGfK847ryTLr9Pf6LLfZrYQosV+wEEFcjZUqITxPucAqsySFnkAyyQ/nCL/iScZbk3P+Rct0pcusmJWxTst0G1NBtJ+yGtW0RR0jQorP0WpNELhwPCB3DcspIvSS45M8466ex1+O2zrSC2P4J+luFoaYGzNWbp2eQq8f2G1njuO4Rr20EzZCGrzK0rJyB97dbrRFZmsvdgcgNeSehFf5OMV2d9U9/U1uiytZjmufspUtxCPWKAAAAABJRU5ErkJggg==">
         <title>Shiver | Nano offline signing.</title>
 
-        <link href="https://fonts.googleapis.com/css?family=Nunito:400&text=SHIVER"  rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400&text=SHIVER">
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+        <style>
+            html {height: 100%;}
+            body {
+                position: relative;
+                margin: 0;
+                padding-top: 3rem;
+                padding-bottom: 6rem;
+                min-height: 100%;
+            }
+            
+            .nav-container {
+                padding: 0rem 1.5rem;
+                height: 3rem;
+                position: fixed;
+                width: 100%;
+                right: 0;
+                top: 0;
+                background-color: #fff;
+                box-shadow: rgba(69, 77, 93, 0.3) 0px 0.05rem 0.2rem;
+                z-index: 500;
+            }
+
+            .navbar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+            }
+            .navbar-brand {
+                font-family: "Nunito";
+                font-weight: 400;
+            }
+
+            .navbar-brand img {vertical-align: middle;}
+
+            .navbar-brand span {
+                display: inline-block;
+                vertical-align: middle;
+                line-height: normal;
+            }
+
+            .dropdown .menu {animation: slide-down .15s ease 1;}
+            .dropdown-toggle:focus ~ .menu {display: none !important;}
+            .dropdown-toggle:hover ~ .menu, .dropdown .menu:hover {display: block !important;}
+            .dropdown-toggle::after {
+                content: '';
+                display: block;
+                position: relative;
+                width: 130%;
+                height: 75%;
+                left: -15%;
+            }
+            @keyframes slide-down {
+                0% {
+                    opacity: 0;
+                }
+
+                100% {
+                    opacity: 1;
+                }
+            }
+            
+            .section {padding: 4.5rem .5rem;}
+            .cards {text-align: center;}
+            .cards .card{max-width: 385px; width: 100%; text-align: left; margin: 0.5em 1%;}
+            
+            footer {
+                color: #999;
+                padding: 1.5rem .5rem 0.5rem .5rem;
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                text-align: center;
+            }
+            
+            footer a, footer a:hover, footer a:active, footer a:focus {color: #778; text-decoration: underline;}
+        </style>
     </head>
     <body>
         <nav class="nav-container">
             <div class="container grid-md navbar">
             <section class="navbar-section">
-                <a href="#" class="navbar-brand mr-2">
+                <a href="https://capin.ski/shiver" class="navbar-brand mr-2">
                     <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjMycHgiIGhlaWdodD0iMzJweCIgdmlld0JveD0iMCAwIDcwMC4yMzYgNzAwLjIzNiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNzAwLjIzNiA3MDAuMjM2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggZD0iTTY0NS41MjcsNDk1LjgxNWwtNzUuNjA5LTQzLjY4OWw2My44MzItMzguMDE1YzEwLjI2Mi00Ljk0NCwxMy40MzgtMTguNzI0LDcuNjAyLTI4Ljg1NSAgIGMtNS45NDEtMTAuMzc1LTE4Ljc2NC0xMi41NjMtMjguNDk4LTYuODlsLTg1LjEwNyw0OS44NDlMMzkyLjQ4OCwzNDkuNTFsMTM1LjI1OC03Ny44OTRsODUuMTA3LDQ5Ljc2OCAgIGMyLjY1OCwxLjk0NSw2LjA3OCwzLjA4LDkuODgxLDMuMDhjNy4yMTMsMCwxMy42NzQtMy40MDQsMTguNjE3LTkuODg5YzUuNjk5LTEwLjI5NCwyLjY2LTIzLjkxMS03LjYwMi0yOC44NTVsLTYzLjgzMi0zOC4wMTUgICBsNzUuNjA5LTQzLjY4OGM5Ljg1NS01LjY3NCwxMy4yNDQtMTguNCw3LjYwMi0yOC44NTZjLTUuMzg5LTEwLjA1MS0xOC43MjMtMTMuNTM2LTI4Ljg3OS03LjYxOWwtNzUuOTksNDQuMDk0bC0xLjEzNS03Ni4wMyAgIGMtMC4xNzgtMTEuNzUzLTkuMTE5LTIxLjIzNy0yMC44OTYtMjEuMjM3Yy0xMS43NzUsMC0yMC45ODQsMTAuMjEzLTIwLjg5NSwyMS4yMzdsMC43NTQsMTAwLjM0NmwtMTM0LjQ5Niw3Ny44OTRWMTU1Ljc4OCAgIGw4NC43MjctNDguMzA5YzkuODkxLTUuNTkzLDE0LjIwMS0xOC42NDMsOC4zNTctMjguODU1Yy01LjkzNC0xMC4zNzUtMTguMTE1LTEzLjQ1Ni0yOC40OTgtNy42MTlsLTY0LjU4NiwzNi40NzVWMjEuMjM2ICAgYzAtMTEuNzUzLTkuNS0yMS4yMzYtMjEuMjc3LTIxLjIzNmMtMTEuNzc3LDAtMjAuODk2LDkuNDgzLTIwLjg5NiwyMS4yMzZ2ODcuMDUzbC02Ni44NzEtMzcuMjg1ICAgYy0xMC40MTYtNS43NTUtMjIuMjc0LTIuNTEzLTI4LjExOCw3LjYxOWMtNS45MzMsMTAuMzc1LTIuMjQ1LDIzLjEwMSw3Ljk3NiwyOC44NTVsODcuMDEzLDQ5LjAzOXYxNTYuNTE4bC0xMzcuNTQyLTc5LjM1MyAgIGwwLjc2Mi05OC4wNzdjMS4xNDMtMTEuMDIzLTguNzM4LTIxLjIzNy0yMC41MTUtMjEuMjM3aC0wLjc2MmMtMTEuMDE2LDAtMjAuNzc0LDkuNDg0LTIwLjg5NiwyMS4yMzdsLTAuNzYyLDczLjc2bC03NC4wODQtNDIuNTU0ICAgYy0xMC4zNDMtNS45OTgtMjMuMTA5LTIuNDMyLTI4LjQ5OSw3LjUzOGMtNS42NDIsMTAuNTM3LTIuNzI0LDIyLjkzOSw3LjYwMywyOC45MzdsNzQuODQ2LDQzLjI4M2wtNjUuMzU0LDM5LjE1ICAgQzUzLjk2LDI5MC42NjQsNTAuNzU4LDMwNC40NDMsNTcsMzE0LjU3NWM0LjAyLDYuNTY2LDkuODczLDkuODg5LDE3Ljg1Niw5Ljg4OWM0LjE3NCwwLDcuNjUxLTEuMDU0LDExLjAxNS0zLjA4bDg1LjQ4OS01MC40OTggICBsMTM3LjE2Miw3OC42MjRsLTEzNy4xNjIsNzkuNDM0bC04NS40ODktNTAuNTc4Yy0xMC4yNjItNS45OTgtMjMuNDktMy4xNjEtMjguODcyLDYuODljLTUuNjQyLDEwLjQ1Ni0yLjU3OCwyMy4wMiw3LjIxNCwyOC44NTUgICBsNjUuMzU1LDM4Ljc0NGwtNzQuODQ3LDQzLjY4OWMtMTAuMzAyLDUuOTk4LTEzLjY0MiwxOC42NDMtNy42MDMsMjguOTM3QzUxLjM0Miw1MzIuNjE0LDU3LDUzNi4xLDY0Ljk3Niw1MzYuMSAgIGMxLjg5NywwLDUuNjk4LTEuMTM1LDEwLjY0My0zLjA4bDc0LjA4NC00Mi41NTRsMC43NjIsNzMuNzZjMC4xMjIsMTEuNzUzLDkuODgsMjAuODMxLDIwLjg5NiwyMC44MzFoMC43NjIgICBjMTEuNzc3LDAsMjAuNjA0LTkuODA4LDIwLjUxNS0yMS42NDJsLTAuNzYyLTk3Ljk5NmwxMzcuNTQyLTc4LjYyM3YxNTUuNzA3bC04Ny4wMTMsNDkuMDM4ICAgYy0xMC4zODMsNS44MzYtMTQuMDE1LDE4LjU2Mi03Ljk3NiwyOC44NTZjNC4yMjMsNy4yMTQsOS44ODEsMTAuNjk5LDE3Ljg1NiwxMC42OTljMy44MDIsMCw3LjMwMy0wLjY0OCwxMC4yNjItMi4zNTEgICBsNjYuODcxLTM3LjkzNXY4OC41MTNjMCwxMS43NTMsOS4xMTksMjAuOTEyLDIwLjg5NiwyMC45MTJjMTEuNzc3LDAsMjEuMjc3LTkuMTU5LDIxLjI3Ny0yMC45MTJ2LTg3LjA1NGw2NC41ODYsMzYuNDc2ICAgYzIuOTU3LDEuNzAyLDYuNDU5LDIuMzUxLDkuODgxLDIuMzUxYzguMzU1LDAsMTQuNTE2LTMuNDA0LDE4LjYxNy0xMC42OTljNS43NzEtMTAuMjEzLDIuMDQzLTIzLjAyMS04LjM1Ny0yOC44NTZsLTg0LjcyNy00Ny40OTggICBWMzg1Ljk4NWwxMzQuNDk2LDc3Ljg5NGwtMC43NTQsOTkuNTM2Yy0wLjA5OCwxMS44MzQsOS4xMTksMjEuNjQyLDIwLjg5NiwyMS42NDJzMjAuNzE3LTkuMDc4LDIwLjg5NS0yMC44MzFsMS4xMzUtNzYuNDM1ICAgbDc1Ljk5LDQ0LjQ5OWMyLjkzNCwxLjcwMiw2Ljg0LDIuMjcsMTEuMDIzLDIuMjdjNy45NzcsMCwxMy44MjgtMy4zMjMsMTcuODU1LTkuODg5ICAgQzY1OS4zNjMsNTE0LjUzOSw2NTUuMzgyLDUwMS40ODksNjQ1LjUyNyw0OTUuODE1eiIgZmlsbD0iIzU3NTVkOSIvPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=" />
                     <span>SHIVER</span>
                 </a>
             </section>
             <section class="navbar-section">
-                <a href="#" class="btn btn-link hide-xs">Guide</a>
-                <a href="#" class="btn btn-link hide-xs">All Tools</a>
-                <div class="dropdown">
-                    <a href="#" class="btn btn-link dropdown-toggle mr-2">Quick Links ⏷</a>
+                <a href="#" class="btn btn-link">All Tools</a>
+                <div class="dropdown dropdown-right">
+                    <a href="#" class="btn btn-link dropdown-toggle" onClick="return false;">Quick Links ⏷</a>
                     <ul class="menu">
                         <li class="menu-item"><a href="#gather-send">Send</a></li>
                         <li class="menu-item"><a href="#gather-receive">Receive</a></li>
@@ -36,7 +114,67 @@
             </section>
             </div>
         </nav>
-                
+        
+        <section class="section text-center">
+            <div class="container grid-xl">
+                <h2>Online Tools</h2>
+                <p class="text-grey">Requires a <a href="https://api.nanode.co">Nanode API key</a>.</p>
+                <div class="cards">
+                    
+                    <div class="card d-inline-block">
+                        <div class="card-header">
+                            <a href="#gather-send" class="btn btn-primary float-right">Go</a>
+                            <div class="card-title h5">Gather Data (Send)</div>
+                        </div>
+                        <div class="card-body">
+                            Gathers all the required data for a state/send block and returns it as a downloadable file.
+                        </div>
+                    </div>
+                    
+                    <div class="card d-inline-block">
+                        <div class="card-header">
+                            <a href="#gather-receive" class="btn btn-primary float-right">Go</a>
+                            <div class="card-title h5">Gather Data (Receive)</div>
+                        </div>
+                        <div class="card-body">
+                            Gathers all the required data for a state/receive block and returns it as a downloadable file.
+                        </div>
+                    </div>
+                    
+                    <div class="card d-inline-block">
+                        <div class="card-header">
+                            <a href="#process" class="btn btn-primary float-right">Go</a>
+                            <div class="card-title h5">Process Block</div>
+                        </div>
+                        <div class="card-body">
+                            Processes a block, broadcasts it to the Nano network, and returns the hash.
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+        
+        <section class="section text-center">
+            <div class="container grid-xl">
+                <h2>Offline Tools</h2>
+                <p class="text-grey">Use these on an airgapped computer.</p>
+                <div class="cards">
+                    
+                    <div class="card d-inline-block">
+                        <div class="card-header">
+                            <a href="#sign" class="btn btn-primary float-right">Go</a>
+                            <div class="card-title h5">Sign Block</div>
+                        </div>
+                        <div class="card-body">
+                            Generates a signature from your block hash and private key, then creates a block.
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+        
         <footer class="bg-gray">
             <p>
                 Designed and built with <span class="text-error">♥</span> by <a href="https://github.com/bcapinski" target="_blank">Benjamin Capinski</a>. Licensed under the <a target="_blank" href="https://github.com/bcapinski/nano-cold-wallet/blob/master/LICENSE" title="MIT License">MIT License</a>.
@@ -54,6 +192,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="content" id="result-content">
+                        <p>Session expired.</p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -232,79 +371,210 @@
         <script src="https://unpkg.com/nanocurrency@1.10.1/dist/nanocurrency.umd.js"></script>
         <script src="https://cdn.rawgit.com/MikeMcl/big.js/8759c0f1/big.min.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        
-        <style>
-            html {height: 100%;}
-            body {
-                position: relative;
-                margin: 0;
-                padding-top: 3rem;
-                padding-bottom: 6rem;
-                min-height: 100%;
+        <script>         
+            // Raw/Nano Conversion Helpers
+            var multNANO = Big('1000000000000000000000000000000');
+            var divNANO = Big('0.000000000000000000000000000001');
+
+            // Nanode API Error Helpers
+            var keyErrors = {
+                400: 'Error 400: Contact me with instructions to replicate.',
+                401: 'Error 401: Invalid API key.',
+                402: 'Error 402: Insufficient Nanode account balance.',
+                403: 'Error 403: Contact me with instructions to replicate.',
+                500: 'Error 500: Contact me with instructions to replicate.',
+                503: 'Error 400: Try again, then contact me with instructions to replicate.'
+            };
+
+            // Read a File
+            function read(file) {
+                var reader = new FileReader();
+                return new Promise((resolve, reject) => {
+                    reader.onerror = () => {
+                        reader.abort();
+                        reject();
+                    };
+                    reader.onload = () => {
+                        resolve(reader.result);
+                    };
+                    reader.readAsText(file, "UTF-8");
+                })
+            }
+            // Create A Response
+            function createResponse(type, content) {
+                var output='';
+                if (type == 'HTML') {
+                    output = content;
+                }
+                if (type == 'keyError') {
+                    output = '<h5 class="text-error">Error:</h5><div class="toast toast-error">' + keyErrors[content] + '</div>';
+                }
+                if (type == 'object') {
+                    var data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(content));
+                    output = '<h4 class="text-center"><a href="' + data + '" download="file.json">Download data as .json file.</a><br /><br /></h4><h5>What you\'re downloading:</h5><pre class="code"><code>';
+                    output += JSON.stringify(content);
+                    output += '</code></pre><h5>List of keys/values:</h5>';
+                    for (i = 0; i < Object.keys(content).length; i++) {
+                        output += Object.keys(content)[i] + ':<br /><code>' + content[Object.keys(content)[i]] + '</code><br />';
+                    }
+                }
+                var r = document.getElementById('result-content');
+                r.innerHTML = output;
             }
 
-            .nav-container {
-                padding: 0rem 1.5rem;
-                height: 3rem;
-                position: fixed;
-                width: 100%;
-                right: 0;
-                top: 0;
-                background-color: #fff;
-                box-shadow: rgba(69, 77, 93, 0.3) 0px 0.05rem 0.2rem;
-                z-index: 500;
+            // Gather State/Send Block Data
+            async function gatherSend() {
+                // Switch Modals
+                createResponse('HTML', '<div class="loading loading-lg"></div>');
+                location.assign('#result');
+
+                // Validate Input:
+                var gsKey = document.getElementById('gsKey');
+                var gsAcc = document.getElementById('gsAcc');
+                var gsDes = document.getElementById('gsDes');
+                var gsAmount = document.getElementById('gsAmount');
+
+                // Initiate Axios:
+                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: gsKey.value}});
+
+                // Gather Account Data:
+                try {var info = await rpc.post('/', {action: 'account_info', account: gsAcc.value, count: 1});}
+                catch (error) {
+                    createResponse('keyError', error.response.status);
+                    return false;
+                }
+
+                // Grab Account Representative
+                try {var rep = await rpc.post('/', {action: 'account_representative', account: gsAcc.value});}
+                catch (error) {
+                    createResponse('keyError', error.response.status);
+                    return false;
+                }
+
+                // Generate Proof of Work
+                try {var work = await rpc.post('/', {action: 'work_generate', hash: info.data.frontier});}
+                catch (error) {
+                    createResponse('keyError', error.response.status);
+                    return false;
+                }
+
+                // Calculate Balance
+                var gsBal = Big(Big(info.data.balance).times(divNANO));
+                gsBal = gsBal.minus(gsAmount.value);
+                gsBal = Big(gsBal.times(multNANO)).toFixed();
+
+                // Create Response
+                createResponse('object', {
+                    'Proof of Work': work.data.work,
+                    'Previous Block Hash': info.data.frontier,
+                    'Representative': rep.data.representative,
+                    'Resulting Balance': gsBal,
+                    'Link': gsDes.value
+                });            
             }
 
-            .navbar {
-                position: absolute;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                right: 0;
-            }
-            .navbar-brand {
-                font-family: "Nunito";
-                font-weight: 400;
+            async function gatherReceive() {
+                // Switch Modals
+                createResponse('HTML', '<div class="loading loading-lg"></div>');
+                location.assign('#result');
+
+                // Validate Input:
+                var grKey = document.getElementById('grKey');
+                var grHash = document.getElementById('grHash');
+
+                // Initiate Axios:
+                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: grKey.value}});
+
+                // Grab Block Data and Amount
+                try {var block = await rpc.post('/', {action: 'blocks_info', hashes: [grHash.value]});}
+                catch (error) {
+                    createResponse('keyError', error.response.status);
+                    return false;
+                }
+                var grAmount = block.data.blocks[grHash.value].amount;
+                block = JSON.parse(block.data.blocks[grHash.value].contents);
+
+                // Gather Account Data:
+                try {var info = await rpc.post('/', {action: 'account_info', account: block.link_as_account, count: 1});}
+                catch (error) {
+                    createResponse('keyError', error.response.status);
+                    return false;
+                }
+
+                // Grab Account Representative
+                try {var rep = await rpc.post('/', {action: 'account_representative', account: block.link_as_account});}
+                catch (error) {
+                    createResponse('keyError', error.response.status);
+                    return false;
+                }
+
+                // Generate Proof of Work
+                try {var work = await rpc.post('/', {action: 'work_generate', hash: info.data.frontier});}
+                catch (error) {
+                    createResponse('keyError', error.response.status);
+                    return false;
+                }
+
+                // Create Response
+                createResponse('object', {
+                    'Proof of Work': work.data.work,
+                    'Previous Block Hash': info.data.frontier,
+                    'Representative': rep.data.representative,
+                    'Resulting Balance': Big(Big(info.data.balance).plus(grAmount)).toFixed(),
+                    'Link': grHash.value
+                });  
             }
 
-            .navbar-brand img {vertical-align: middle;}
+            async function sign() {
+                // Switch Modals
+                createResponse('HTML', '<div class="loading loading-lg"></div>');
+                location.assign('#result');
 
-            .navbar-brand span {
-                display: inline-block;
-                vertical-align: middle;
-                line-height: normal;
+                // Validate Input:
+                var key = document.getElementById('private');
+                var data = await read(document.getElementById('data').files[0]);
+                var data = JSON.parse(data);
+
+                // Sign Block
+                console.log(data);
+                var data = {
+                    'work': data['Proof of Work'],
+                    'previous': data['Previous Block Hash'],
+                    'representative': data['Representative'],
+                    'balance': data['Resulting Balance'],
+                    'link': data['Link']
+                };            
+                var block = await NanoCurrency.createStateBlock(key.value, data)
+
+                // Create Response
+                createResponse('object', block.block);
             }
 
-            .dropdown-toggle:focus ~ .menu {display: none !important;}
-            .dropdown-toggle:hover ~ .menu, .dropdown .menu:hover {display: block !important;}
-            .dropdown-toggle::after {
-                content: '';
-                display: block;
-                position: relative;
-                width: 130%;
-                height: 75%;
-                left: -15%;
-            }
+            async function process() {
+                // Switch Modals
+                createResponse('HTML', '<div class="loading loading-lg"></div>');
+                location.assign('#result');
 
-            .menu .menu-item>a:focus, .menu .menu-item>a:hover {
-                background: #f1f1fc;
-                color: #5755d9;
-                box-shadow: initial;
+                // Validate Input:
+                var key = document.getElementById('key');
+                var block = await read(document.getElementById('block').files[0]);
+                var block = block;
+
+                // Initiate Axios:
+                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: key.value}});
+
+                // Process Block
+                try {var hash = await rpc.post('/', {action: 'process', block: block});}
+                catch (error) {
+                    createResponse('keyError', error.response.status);
+                    return false;
+                }
+
+                // Create Response
+                createResponse('object', {
+                    'Hash': hash.data.hash
+                });  
             }
-            
-            
-            
-            
-            footer {
-                color: #999;
-                padding: 1.5rem .5rem 0.5rem .5rem;
-                position: absolute;
-                right: 0;
-                bottom: 0;
-                left: 0;
-                text-align: center;
-            }
-            footer a, footer a:hover, footer a:active, footer a:focus {color: #778; text-decoration: underline;}
-        </style>
+        </script>
     </body>
 </html>
