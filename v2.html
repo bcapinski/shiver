@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:400&text=SHIVER"  rel="stylesheet">
-    <script src="https://wzrd.in/standalone/nanocurrency@latest"></script>
+    <script src="https://unpkg.com/nanocurrency@1.10.1/dist/nanocurrency.umd.js"></script>
     <script src="https://cdn.rawgit.com/MikeMcl/big.js/8759c0f1/big.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <style>
@@ -446,7 +446,7 @@
                                 <label class="form-label">Block to Sign:</label>
                             </div>
                             <div class="col-7 col-sm-12">
-                                <input class="form-input" type="text" id="object" />
+                                <input class="form-input" type="file" id="data" />
                             </div>
                         </div>
                     </form>
@@ -484,7 +484,7 @@
                                 <label class="form-label">Block to process:</label>
                             </div>
                             <div class="col-7 col-sm-12">
-                                <input class="form-input" type="text" id="block" />
+                                <input class="form-input" type="file" id="block" />
                             </div>
                         </div>
                     </form>
@@ -499,7 +499,7 @@
         </div>
     </div>
     
-    <script>
+    <script>         
         // Raw/Nano Conversion Helpers
         var multNANO = Big('1000000000000000000000000000000');
         var divNANO = Big('0.000000000000000000000000000001');
@@ -513,6 +513,21 @@
             500: 'Error 500: Contact me with instructions to replicate.',
             503: 'Error 400: Try again, then contact me with instructions to replicate.'
         };
+        
+        // Read a File
+        function read(file) {
+            var reader = new FileReader();
+            return new Promise((resolve, reject) => {
+                reader.onerror = () => {
+                    reader.abort();
+                    reject();
+                };
+                reader.onload = () => {
+                    resolve(reader.result);
+                };
+                reader.readAsText(file, "UTF-8");
+            })
+        }
 
         // Create A Response
         function createResponse(type, content) {
@@ -524,7 +539,8 @@
                 output = '<h5 class="text-error">Error:</h5><div class="toast toast-error">' + keyErrors[content] + '</div>';
             }
             if (type == 'object') {
-                output = '<h5>An object to copy/paste:</h5><pre class="code"><code>';
+                var data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(content));
+                output = '<h4 class="text-center"><a href="' + data + '" download="file.json">Download data as .json file.</a><br /><br /></h4><h5>What you\'re downloading:</h5><pre class="code"><code>';
                 output += JSON.stringify(content);
                 output += '</code></pre><h5>List of keys/values:</h5>';
                 for (i = 0; i < Object.keys(content).length; i++) {
@@ -578,12 +594,11 @@
             
             // Create Response
             createResponse('object', {
-                'Type': 'Send',
                 'Proof of Work': work.data.work,
                 'Previous Block Hash': info.data.frontier,
                 'Representative': rep.data.representative,
                 'Resulting Balance': gsBal,
-                'Destination': gsDes.value
+                'Link': gsDes.value
             });            
         }
         
@@ -631,12 +646,11 @@
                         
             // Create Response
             createResponse('object', {
-                'Type': 'Receive',
                 'Proof of Work': work.data.work,
                 'Previous Block Hash': info.data.frontier,
                 'Representative': rep.data.representative,
                 'Resulting Balance': Big(Big(info.data.balance).plus(grAmount)).toFixed(),
-                'Block Hash': grHash.value
+                'Link': grHash.value
             });  
         }
         
@@ -646,16 +660,23 @@
             location.assign('#result');
             
             // Validate Input:
-            var key = document.getElementById('key');
-            var block = document.getElementById('block');
-                        
-            // Sign Block
+            var key = document.getElementById('private');
+            var data = await read(document.getElementById('data').files[0]);
+            var data = JSON.parse(data);
             
-                        
+            // Sign Block
+            console.log(data);
+            var data = {
+                'work': data['Proof of Work'],
+                'previous': data['Previous Block Hash'],
+                'representative': data['Representative'],
+                'balance': data['Resulting Balance'],
+                'link': data['Link']
+            };            
+            var block = await NanoCurrency.createStateBlock(key.value, data)
+            
             // Create Response
-            createResponse('object', {
-                '': ''
-            });  
+            createResponse('object', block.block);
         }
         
         async function process() {
@@ -665,10 +686,11 @@
             
             // Validate Input:
             var key = document.getElementById('key');
-            var block = document.getElementById('block');
+            var block = await read(document.getElementById('block').files[0]);
+            var block = block;
             
             // Initiate Axios:
-            var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: grKey.value}});
+            var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: key.value}});
             
             // Process Block
             try {var hash = await rpc.post('/', {action: 'process', block: block});}
