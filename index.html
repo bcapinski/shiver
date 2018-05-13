@@ -1,12 +1,960 @@
-Coming soon!
-<br />
-:)
-<br />
-<br />
-Ignore this:
-<br />
-<a href="old/v1">one</a>
-<br />
-<a href="old/v2">two</a>
-<br />
-<a href="old/v3">three</a>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--Meta Stuff-->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <meta name="author" content="Benjamin Capinski">
+        <meta name="description" content="A Nano web-wallet that supports offline signing on air-gapped computers.">
+        <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABqlBMVEUAAAAAAP+AgP9VVf9AQL9mZsxVVdVJSdtgYN9VVeNNTeZdXdFVVdVOTthZWdlcUtZbUttVVd1YWNdVVdhXV9tVVdxVVdhZU9lXV9pZU9tVVddZU9hXV9lXV9tYU9hVVdlWVthVVdlYVNlWVtpYVNdZVdhXVNtWVtdZVdhWVtlXVNpWVttYVdhXVNhYVdlXVNpWVtpWVthXVNlWVtpXVNhWVtlWVtlYVdpXVNpYVtpXVdlXVdpXVdlWVNlXVdpYVthXVdlYVtlWVNpYVthWVNlYVtlXVtpXVdhWVNhXVdlWVNlXVtlYVNhXVdlXVdlXVdlXVtpXVdlXVtpXVdlWVdpXVdlXVdhWVdlXVdlXVdlWVdlXVdlXVdpYVdhXVdlXVdlYVdlXVdlYVdhXVdlXVdlYVdlXVdlXVdlYVdpXVdlXVdlXVdlXVdpXVdlXVdlXVdlXVdpXVdlXVdlXVdlXVdhXVdlWVdlXVdlXVdlWVdlXVdlWVdlYVdlXVdlXVdlXVdlXVdlXVdlXVdhXVdlXVdlXVdlXVdlXVdlXVdlXVdlXVdlXVdlXVdn///9xysDaAAAAjHRSTlMAAQIDBAUGBwgJCgsMDRQZHB4gISMkJygpKy0uLzI0Njs8PT5AQkZHSEpMTU5PUVJTVlhZW19lZmducnV4eXt9foCCg4WGiYqLjZSVl5mcn6Soqq+xtbm6u7y9vr/AwcLDxMbHyMnKy8zP0dLT1djZ2tve4OHi4+Tl5ufp7O/x8vP09fb3+Pn6+/z9/oxgKq8AAAABYktHRI0bDOLVAAABvUlEQVQ4y7VTaVtSQRidi4CimVupKeUCoWYqKpVrVoilklu5VRLgLpUbIJIi4XIv3POjnZkLwkXwS4/vh5kz7znP865DiNq+fCN3W0T8D4Fx9a2BCUpHfTU5BSYR/p4z6XUYsdpbZMFUPyG18+A2V0XI8Ee1oBKb7Gr9DWw2MxSSNTdkV6dAHmODY21UVIgQdETobEliz7NqrKmrCMJQt4JDji37SCzAqxb48VnC3nPlUTgUBXz6TIHuGIgM6lNZ6Mdp7nsdaUHLH+qwa1P8i11Ikz+ApTpF8OgrsDonY8ek8G8AF6WsB4g7H0bEEsclgjaBmLYhW7jA/JM+qRUNR3EqJY4Qe1/Mm9fnyu5o2XQCkGfK847ryTLr9Pf6LLfZrYQosV+wEEFcjZUqITxPucAqsySFnkAyyQ/nCL/iScZbk3P+Rct0pcusmJWxTst0G1NBtJ+yGtW0RR0jQorP0WpNELhwPCB3DcspIvSS45M8466ex1+O2zrSC2P4J+luFoaYGzNWbp2eQq8f2G1njuO4Rr20EzZCGrzK0rJyB97dbrRFZmsvdgcgNeSehFf5OMV2d9U9/U1uiytZjmufspUtxCPWKAAAAABJRU5ErkJggg==">
+        <title>Shiver | Nano offline signing.</title>
+        
+        <!--Styles and Fonts-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400&text=SHIVER">
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+        <style>
+            html {height: 100%;}
+            body {
+                position: relative;
+                margin: 0;
+                padding-top: 3rem;
+                padding-bottom: 6rem;
+                min-height: 100%;
+            }
+            
+            .nav-container {
+                padding: 0rem 1.5rem;
+                height: 3rem;
+                position: fixed;
+                width: 100%;
+                right: 0;
+                top: 0;
+                background-color: #fff;
+                box-shadow: rgba(69, 77, 93, 0.3) 0px 0.05rem 0.2rem;
+                z-index: 500;
+            }
+
+            .navbar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+            }
+            .navbar-brand {
+                font-family: "Nunito";
+                font-weight: 400;
+            }
+
+            .navbar-brand img {vertical-align: middle;}
+
+            .navbar-brand span {
+                display: inline-block;
+                vertical-align: middle;
+                line-height: normal;
+            }
+
+            .dropdown .menu {animation: slide-down .15s ease 1;}
+            .dropdown-toggle:focus ~ .menu {display: none !important;}
+            .dropdown-toggle:hover ~ .menu, .dropdown .menu:hover {display: block !important;}
+            .dropdown-toggle::after {
+                content: '';
+                display: block;
+                position: relative;
+                width: 130%;
+                height: 75%;
+                left: -15%;
+            }
+            @keyframes slide-down {
+                0% {
+                    opacity: 0;
+                }
+
+                100% {
+                    opacity: 1;
+                }
+            }
+            
+            .hero {
+                padding-bottom: 2rem;
+                padding-top: 9rem;
+            }
+    
+            .hero h1 {
+                color: #50596c;
+                font-size: 1.6rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero h2 {
+                color: #5b657a;
+                font-size: .9rem;
+                font-weight: 400;
+                line-height: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero h2 u {
+                border-bottom: .1rem solid currentColor;
+                padding-bottom: .05rem;
+                text-decoration: none;
+            }
+
+            .hero .column {padding: .4rem;}
+
+            .hero .card {
+                background: 0 0;
+                border: 0;
+                color: #727e96;
+                padding: .5rem;
+            }
+
+            .hero .card {
+                background: 0 0;
+                border: 0;
+                color: #727e96;
+                padding: .5rem;
+            }
+
+            .hero .card .card-title {
+                color: #5755d9;
+                font-size: .9rem;
+                margin-bottom: 0;
+            }
+
+            .hero .card .card-title {
+                color: #5755d9;
+                font-size: .9rem;
+                margin-bottom: 0;
+            }
+            
+            .section {padding: 4.5rem .5rem;}
+            .about .column {padding: .4rem;}
+            .about .text-secondary {text-indent: 2rem;}
+            #online {padding-bottom: 0rem;}
+            
+            .cards {text-align: center;}
+            .cards .card{max-width: 430px; width: 100%; text-align: left; margin: 0.5em 1%;}
+            
+            footer {
+                color: #999;
+                padding: 1.5rem .5rem 0.5rem .5rem;
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                text-align: center;
+            }
+            
+            footer a, footer a:hover, footer a:active, footer a:focus {color: #778; text-decoration: underline;}
+        </style>
+    </head>
+    <body>
+        
+        <!--Navigation Bar-->
+        <nav class="nav-container">
+            <div class="container grid-md navbar">
+            <section class="navbar-section">
+                <a href="https://capin.ski/shiver" rel="noopener" target="_blank" class="navbar-brand mr-2">
+                    <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjMycHgiIGhlaWdodD0iMzJweCIgdmlld0JveD0iMCAwIDcwMC4yMzYgNzAwLjIzNiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNzAwLjIzNiA3MDAuMjM2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggZD0iTTY0NS41MjcsNDk1LjgxNWwtNzUuNjA5LTQzLjY4OWw2My44MzItMzguMDE1YzEwLjI2Mi00Ljk0NCwxMy40MzgtMTguNzI0LDcuNjAyLTI4Ljg1NSAgIGMtNS45NDEtMTAuMzc1LTE4Ljc2NC0xMi41NjMtMjguNDk4LTYuODlsLTg1LjEwNyw0OS44NDlMMzkyLjQ4OCwzNDkuNTFsMTM1LjI1OC03Ny44OTRsODUuMTA3LDQ5Ljc2OCAgIGMyLjY1OCwxLjk0NSw2LjA3OCwzLjA4LDkuODgxLDMuMDhjNy4yMTMsMCwxMy42NzQtMy40MDQsMTguNjE3LTkuODg5YzUuNjk5LTEwLjI5NCwyLjY2LTIzLjkxMS03LjYwMi0yOC44NTVsLTYzLjgzMi0zOC4wMTUgICBsNzUuNjA5LTQzLjY4OGM5Ljg1NS01LjY3NCwxMy4yNDQtMTguNCw3LjYwMi0yOC44NTZjLTUuMzg5LTEwLjA1MS0xOC43MjMtMTMuNTM2LTI4Ljg3OS03LjYxOWwtNzUuOTksNDQuMDk0bC0xLjEzNS03Ni4wMyAgIGMtMC4xNzgtMTEuNzUzLTkuMTE5LTIxLjIzNy0yMC44OTYtMjEuMjM3Yy0xMS43NzUsMC0yMC45ODQsMTAuMjEzLTIwLjg5NSwyMS4yMzdsMC43NTQsMTAwLjM0NmwtMTM0LjQ5Niw3Ny44OTRWMTU1Ljc4OCAgIGw4NC43MjctNDguMzA5YzkuODkxLTUuNTkzLDE0LjIwMS0xOC42NDMsOC4zNTctMjguODU1Yy01LjkzNC0xMC4zNzUtMTguMTE1LTEzLjQ1Ni0yOC40OTgtNy42MTlsLTY0LjU4NiwzNi40NzVWMjEuMjM2ICAgYzAtMTEuNzUzLTkuNS0yMS4yMzYtMjEuMjc3LTIxLjIzNmMtMTEuNzc3LDAtMjAuODk2LDkuNDgzLTIwLjg5NiwyMS4yMzZ2ODcuMDUzbC02Ni44NzEtMzcuMjg1ICAgYy0xMC40MTYtNS43NTUtMjIuMjc0LTIuNTEzLTI4LjExOCw3LjYxOWMtNS45MzMsMTAuMzc1LTIuMjQ1LDIzLjEwMSw3Ljk3NiwyOC44NTVsODcuMDEzLDQ5LjAzOXYxNTYuNTE4bC0xMzcuNTQyLTc5LjM1MyAgIGwwLjc2Mi05OC4wNzdjMS4xNDMtMTEuMDIzLTguNzM4LTIxLjIzNy0yMC41MTUtMjEuMjM3aC0wLjc2MmMtMTEuMDE2LDAtMjAuNzc0LDkuNDg0LTIwLjg5NiwyMS4yMzdsLTAuNzYyLDczLjc2bC03NC4wODQtNDIuNTU0ICAgYy0xMC4zNDMtNS45OTgtMjMuMTA5LTIuNDMyLTI4LjQ5OSw3LjUzOGMtNS42NDIsMTAuNTM3LTIuNzI0LDIyLjkzOSw3LjYwMywyOC45MzdsNzQuODQ2LDQzLjI4M2wtNjUuMzU0LDM5LjE1ICAgQzUzLjk2LDI5MC42NjQsNTAuNzU4LDMwNC40NDMsNTcsMzE0LjU3NWM0LjAyLDYuNTY2LDkuODczLDkuODg5LDE3Ljg1Niw5Ljg4OWM0LjE3NCwwLDcuNjUxLTEuMDU0LDExLjAxNS0zLjA4bDg1LjQ4OS01MC40OTggICBsMTM3LjE2Miw3OC42MjRsLTEzNy4xNjIsNzkuNDM0bC04NS40ODktNTAuNTc4Yy0xMC4yNjItNS45OTgtMjMuNDktMy4xNjEtMjguODcyLDYuODljLTUuNjQyLDEwLjQ1Ni0yLjU3OCwyMy4wMiw3LjIxNCwyOC44NTUgICBsNjUuMzU1LDM4Ljc0NGwtNzQuODQ3LDQzLjY4OWMtMTAuMzAyLDUuOTk4LTEzLjY0MiwxOC42NDMtNy42MDMsMjguOTM3QzUxLjM0Miw1MzIuNjE0LDU3LDUzNi4xLDY0Ljk3Niw1MzYuMSAgIGMxLjg5NywwLDUuNjk4LTEuMTM1LDEwLjY0My0zLjA4bDc0LjA4NC00Mi41NTRsMC43NjIsNzMuNzZjMC4xMjIsMTEuNzUzLDkuODgsMjAuODMxLDIwLjg5NiwyMC44MzFoMC43NjIgICBjMTEuNzc3LDAsMjAuNjA0LTkuODA4LDIwLjUxNS0yMS42NDJsLTAuNzYyLTk3Ljk5NmwxMzcuNTQyLTc4LjYyM3YxNTUuNzA3bC04Ny4wMTMsNDkuMDM4ICAgYy0xMC4zODMsNS44MzYtMTQuMDE1LDE4LjU2Mi03Ljk3NiwyOC44NTZjNC4yMjMsNy4yMTQsOS44ODEsMTAuNjk5LDE3Ljg1NiwxMC42OTljMy44MDIsMCw3LjMwMy0wLjY0OCwxMC4yNjItMi4zNTEgICBsNjYuODcxLTM3LjkzNXY4OC41MTNjMCwxMS43NTMsOS4xMTksMjAuOTEyLDIwLjg5NiwyMC45MTJjMTEuNzc3LDAsMjEuMjc3LTkuMTU5LDIxLjI3Ny0yMC45MTJ2LTg3LjA1NGw2NC41ODYsMzYuNDc2ICAgYzIuOTU3LDEuNzAyLDYuNDU5LDIuMzUxLDkuODgxLDIuMzUxYzguMzU1LDAsMTQuNTE2LTMuNDA0LDE4LjYxNy0xMC42OTljNS43NzEtMTAuMjEzLDIuMDQzLTIzLjAyMS04LjM1Ny0yOC44NTZsLTg0LjcyNy00Ny40OTggICBWMzg1Ljk4NWwxMzQuNDk2LDc3Ljg5NGwtMC43NTQsOTkuNTM2Yy0wLjA5OCwxMS44MzQsOS4xMTksMjEuNjQyLDIwLjg5NiwyMS42NDJzMjAuNzE3LTkuMDc4LDIwLjg5NS0yMC44MzFsMS4xMzUtNzYuNDM1ICAgbDc1Ljk5LDQ0LjQ5OWMyLjkzNCwxLjcwMiw2Ljg0LDIuMjcsMTEuMDIzLDIuMjdjNy45NzcsMCwxMy44MjgtMy4zMjMsMTcuODU1LTkuODg5ICAgQzY1OS4zNjMsNTE0LjUzOSw2NTUuMzgyLDUwMS40ODksNjQ1LjUyNyw0OTUuODE1eiIgZmlsbD0iIzU3NTVkOSIvPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=" />
+                    <span>SHIVER</span>
+                </a>
+            </section>
+            <section class="navbar-section">
+                <span class="text-grey hide-xs mr-2">v0.4.0</span>
+                <a href="#wizard-start" class="btn btn-link">Wizard</a>
+                <div class="dropdown dropdown-right">
+                    <a href="#" class="btn btn-link dropdown-toggle mr-2" onClick="return false;">Tools ⏷</a>
+                    <ul class="menu">
+                        <li class="menu-item"><a href="#online">Online Tools</a></li>
+                        <li class="menu-item"><a href="#offline">Offline Tools</a></li>
+                        <li class="divider"></li>
+                        <li class="menu-item"><a href="#tools-sign">Sign</a></li>
+                    </ul>
+                </div>
+                <a href="download.html" class="btn btn-primary hide-xs ml-1" download>Download</a>
+            </section>
+            </div>
+        </nav>
+        
+        <!--Hero Section-->
+        <header class="bg-gray">
+            <div class="hero container grid-md text-center">
+                <h1>Shiver</h1>
+                <h2>a <u>fast</u> & <u>secure</u> web-based Nano <u>light-wallet</u></h2>
+                <p>
+                    <a href="#wizard-start" class="btn btn-primary btn-lg">Get Started</a>
+                    <a href="" class="btn btn-primary btn-lg" download="shiver_wallet">Download</a>
+                </p>
+                <p class="text-gray">v0.4.0</p>
+                <div class="columns">
+                    <div class="column col-4 col-sm-8 col-xs-12 col-mx-auto">
+                        <div class="card text-center">
+                            <div class="card-header"><span class="card-title">Fast</span></div>
+                            <div class="card-body">Shiver streamlines the offline signing process, allowing ease of use.</div>
+                        </div>
+                    </div>
+                    <div class="column col-4 col-sm-8 col-xs-12 col-mx-auto">
+                        <div class="card text-center">
+                            <div class="card-header"><span class="card-title">Secure</span></div>
+                            <div class="card-body">Your seed will never touch a computer connected to the Internet.</div>
+                        </div>
+                    </div>
+                    <div class="column col-4 col-sm-8 col-xs-12 col-mx-auto">
+                        <div class="card text-center">
+                            <div class="card-header"><span class="card-title">Light</span></div>
+                            <div class="card-body">All you need is one .html file to use Shiver - a minified version of this web page.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!--About Section-->
+        <section class="section about bg-primary text-light text-center">
+            <div class="container grid-md">
+                <h2>About</h2>
+                <div class="columns">
+                    <div class="column col-10 col-sm-12 col-mx-auto text-left">
+                        <p class="text-secondary">Shiver Wallet is a web-based light wallet that permits offline signing of transactions. This allows you to keep your seed safe on an air-gapped computer, and only access it when you need to sign something. Your seed will never touch a computer that's connected to the Internet, dropping possible attack vectors to nearly zero.</p>
+                        <p class="text-secondary">Simply download a copy of this webpage onto a flashdrive (You should only need one file, download.html. It's completely self contained). Use a device connected to the internet to gather the data requried for a state/send block. Transfer it to your air-gapped computer and sign the transaction using your private key (theres a seed --> private key tool at the bottom of the page), then send it on the Internet-connected device.</p>
+                    </div>
+                    <div class="column col-10 col-sm-12 col-mx-auto">
+                        <a href="" class="btn btn-lg" download="shiver-wallet">Download Shiver Wallet</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!--Online Tools Section-->
+        <section class="section" id="online">
+            <div class="container grid-lg text-center">
+                <h2>Online Tools</h2>
+                <p class="text-grey">Requires a <a href="https://api.nanode.co">Nanode API key</a>.</p>
+                <div class="cards">
+                    
+                    <div class="card d-inline-block">
+                        <div class="card-header">
+                            <a href="#gather-send" class="btn btn-primary float-right">Go</a>
+                            <div class="card-title h5">Gather Data (Send)</div>
+                        </div>
+                        <div class="card-body">
+                            Gathers all the required data for a state/send block and returns it as a downloadable file.
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+        
+        <!--Offline Tools Section-->
+        <section class="section" id="offline">
+            <div class="container grid-lg text-center">
+                <h2>Offline Tools</h2>
+                <p class="text-grey">Use these on an airgapped computer.</p>
+                <div class="cards">
+                    
+                    <div class="card d-inline-block">
+                        <div class="card-header">
+                            <a href="#gather-send" class="btn btn-primary float-right">Go</a>
+                            <div class="card-title h5">Gather Data (Send)</div>
+                        </div>
+                        <div class="card-body">
+                            Gathers all the required data for a state/send block and returns it as a downloadable file.
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+        
+        <!--Footer-->
+        <footer class="bg-gray">
+            <p>Designed and built with <span class="text-error">♥</span> by <a href="https://github.com/bcapinski" target="_blank">Benjamin Capinski</a>. Licensed under the <a target="_blank" href="https://github.com/bcapinski/nano-cold-wallet/blob/master/LICENSE" title="MIT License">MIT License</a>.</p>
+        </footer>
+        
+        <!--MODAL: Loading-->
+        <div class="modal modal-lg" id="loading">
+            <a href="#close" class="modal-overlay"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right"></a>
+                    <div class="modal-title h3">Loading:</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <p>Session expired.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="" class="btn btn-link">Cancel</a>
+                </div>
+            </div>
+        </div>
+        
+        <!--MODAL: Wizard Start-->
+        <div class="modal modal-lg" id="wizard-start">
+            <a href="#wizard-start" class="modal-overlay"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right"></a>
+                    <div class="modal-title h3">Wizard: Start</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <form class="form-horizontal">
+                            
+                            <div class="form-group">
+                                <div class="col-3 col-sm-12">
+                                    <label class="form-label">Nanode API Key:</label>
+                                </div>
+                                <div class="col-7 col-sm-12">
+                                    <input class="form-input" type="text" id="wizardKey" />
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-3 col-sm-12">
+                                    <label class="form-label">Transaction Type:</label>
+                                </div>
+                                <div class="col-7 col-sm-12">
+                                    <select class="form-select" id="wizardType">
+                                        <option>Send</option>
+                                        <option>Receive</option>
+                                        <option>Change</option>
+                                        <option>Open</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="wizardStart()">Next</button>
+                    <a href="#close" class="btn btn-link">Close</a>
+                </div>
+            </div>
+        </div>
+        
+        <!--MODAL: Wizard Send-->
+        <div class="modal modal-lg" id="wizard-send">
+            <a href="#wizard-send" class="modal-overlay"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right"></a>
+                    <div class="modal-title h3">Wizard: Send</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <form class="form-horizontal">
+                            
+                            <div class="form-group">
+                                <div class="col-3 col-sm-12">
+                                    <label class="form-label"><strong>Your</strong> Account:</label>
+                                </div>
+                                <div class="col-7 col-sm-12">
+                                    <input class="form-input" type="text" id="wizardSendAccount" />
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-3 col-sm-12">
+                                    <label class="form-label"><strong>Their</strong> Account:</label>
+                                </div>
+                                <div class="col-7 col-sm-12">
+                                    <input class="form-input" type="text" id="wizardSendDestination" />
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-3 col-sm-12">
+                                    <label class="form-label">Amount:</label>
+                                </div>
+                                <div class="col-7 col-sm-12">
+                                    <input class="form-input" type="text" id="wizardSendAmount" />
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="wizardSend()">Next</button>
+                    <a href="#close" class="btn btn-link">Close</a>
+                </div>
+            </div>
+        </div>
+        
+        <!--MODAL: Wizard Receive-->
+        <div class="modal modal-lg" id="wizard-receive">
+            <a href="#wizard-receive" class="modal-overlay"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right"></a>
+                    <div class="modal-title h3">Wizard: Receive</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <form class="form-horizontal">
+                            
+                            <div class="form-group">
+                                <div class="col-3 col-sm-12">
+                                    <label class="form-label">Transaction Hash:</label>
+                                </div>
+                                <div class="col-7 col-sm-12">
+                                    <input class="form-input" type="text" id="wizardReceiveHash" />
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="wizardReceive()">Next</button>
+                    <a href="#close" class="btn btn-link">Close</a>
+                </div>
+            </div>
+        </div>
+        
+        <!--MODAL: Wizard Change-->
+        <div class="modal modal-lg" id="wizard-change">
+            <a href="#wizard-change" class="modal-overlay"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right"></a>
+                    <div class="modal-title h3">Wizard: Change</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <form class="form-horizontal">
+                            
+                            <div class="form-group">
+                                <div class="col-3 col-sm-12">
+                                    <label class="form-label"><strong>Your</strong> Account:</label>
+                                </div>
+                                <div class="col-7 col-sm-12">
+                                    <input class="form-input" type="text" id="wizardChangeAccount" />
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-3 col-sm-12">
+                                    <label class="form-label">Representative:</label>
+                                </div>
+                                <div class="col-7 col-sm-12">
+                                    <input class="form-input" type="text" id="wizardChangeRepresentative" />
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="wizardChange()">Next</button>
+                    <a href="#close" class="btn btn-link">Close</a>
+                </div>
+            </div>
+        </div>
+        
+        <!--MODAL: Wizard Open-->
+        <div class="modal modal-lg" id="wizard-open">
+            <a href="#wizard-open" class="modal-overlay"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right"></a>
+                    <div class="modal-title h3">Wizard: Open</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <form class="form-horizontal">
+                            
+                            <div class="form-group">
+                                <div class="col-3 col-sm-12">
+                                    <label class="form-label">Hash:</label>
+                                </div>
+                                <div class="col-7 col-sm-12">
+                                    <input class="form-input" type="text" id="wizardOpenHash" />
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-3 col-sm-12">
+                                    <label class="form-label">Representative:</label>
+                                </div>
+                                <div class="col-7 col-sm-12">
+                                    <input class="form-input" type="text" id="wizardOpenRepresentative" />
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="wizardOpen()">Next</button>
+                    <a href="#close" class="btn btn-link">Close</a>
+                </div>
+            </div>
+        </div>
+        
+        <!--MODAL: Wizard Process-->
+        <div class="modal modal-lg" id="wizard-process">
+            <a href="#wizard-process" class="modal-overlay"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right"></a>
+                    <div class="modal-title h3">Wizard: Process</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <p>The hash you need to sign is <code>Session Expired</code>.</p>
+                        <form class="form-horizontal">
+                            
+                            <div class="form-group">
+                                <div class="col-3 col-sm-12">
+                                    <label class="form-label">Signature:</label>
+                                </div>
+                                <div class="col-7 col-sm-12">
+                                    <input class="form-input" type="text" id="wizardProcessSignature" />
+                                </div>
+                            </div>
+                                                        
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="wizardProcess()">Next</button>
+                    <a href="#close" class="btn btn-link">Close</a>
+                </div>
+            </div>
+        </div>
+        
+        <!--MODAL: Wizard Sign-->
+        <div class="modal modal-lg" id="wizard-sign">
+            <a href="#wizard-sign" class="modal-overlay"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right"></a>
+                    <div class="modal-title h3">Wizard: Sign</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <form class="form-horizontal">
+                            
+                            <div class="form-group">
+                                <div class="col-3 col-sm-12">
+                                    <label class="form-label">Private Key:</label>
+                                </div>
+                                <div class="col-7 col-sm-12">
+                                    <input class="form-input" type="text" id="wizardSignPrivateKey" />
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-3 col-sm-12">
+                                    <label class="form-label">Hash:</label>
+                                </div>
+                                <div class="col-7 col-sm-12">
+                                    <input class="form-input" type="text" id="wizardSignHash" />
+                                </div>
+                            </div>
+                                                        
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="wizardSign()">Sign</button>
+                    <a href="#close" class="btn btn-link">Close</a>
+                </div>
+            </div>
+        </div>
+        
+        <!--MODAL: Result -->
+        <div class="modal modal-lg" id="result">
+            <a href="#close" class="modal-overlay"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right"></a>
+                    <div class="modal-title h3">Result:</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <p>Session expired.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="" class="btn btn-link">Cancel</a>
+                </div>
+            </div>
+        </div>
+        
+        <!--JavaScript at end of body for optimized loading-->
+        <script src="https://unpkg.com/nanocurrency@latest/dist/nanocurrency.umd.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script>
+            // Varible Definitions
+            var data = new Object();
+            
+            // Nanode API Error Helpers
+            var apiErrors = {
+                400: 'Error 400: Contact me with instructions to replicate.',
+                401: 'Error 401: Invalid API key.',
+                402: 'Error 402: Insufficient Nanode account balance.',
+                403: 'Error 403: Contact me with instructions to replicate.',
+                500: 'Error 500: Contact me with instructions to replicate.',
+                503: 'Error 400: Try again, then contact me with instructions to replicate.'
+            };
+            
+            // Error Handling
+            function error(err) {
+                document.querySelector('#result .content p').innerHTML = '<h5 class="text-error">Error:</h5><div class="toast toast-error">' + err +'</div>';
+                location.replace('#result');
+                document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
+            }
+            function apiError(err) {
+                document.querySelector('#result .content p').innerHTML = '<h5 class="text-error">Error:</h5><div class="toast toast-error">' + apiErrors[err] + '</div>';
+                location.replace('#result');
+                document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
+            }
+            
+            // Add Values. Use Negative Numbers for Subtracting.
+            function add() {
+                function e(a, b) {
+                    var l = 0 <= +a ? 1 : -1,
+                        m = 0 <= +b ? 1 : -1;
+                    if (0 > l) {
+                        return 0 > m ? "-" + e(a.replace("-", ""), b.replace("-", "")) : e(b, a);
+                    }
+                    for (var f = a.replace("-", "").split("").reverse(), h = b.replace("-", "").split("").reverse(), c = 0, g = 0, n = Math.max(f.length, h.length), k = [], d = 0; d < n; d++) {
+                        10 === g && (g = 0, f[d]--);
+                        f[d] < h[d] && void 0 !== f[d + 1] && (g = 10);
+                        c = g + (+f[d] || 0) + m * (+h[d] || 0) + c;
+                        if (0 > c) {
+                            return 0 > l ? "-" + e(b.replace("-", ""), a.replace("-", "")) : "-" + e(b.replace("-", ""), "-" + a);
+                        }
+                        k.push(c % 10);
+                        c = Math.floor(c / 10);
+                    }
+                    0 !== c && k.push(c);
+                    return k.reverse().join("").replace(/^0+/, "") || "0";
+                }
+                return 0 === arguments.length ? "0" : [].reduce.call(arguments, function(a, b) {
+                    return e(a, b);
+                }, "0");
+            };
+            
+            
+            // Wizard - Start
+            async function wizardStart() {
+                // Start Spinny Thing
+                document.querySelector('#loading .modal-title').innerHTML = 'Loading:';
+                document.querySelector('#loading .content').innerHTML = '<div class="loading loading-lg"></div><br /><br /><p class="text-center">Verifying API Key...</p>';
+                location.replace('#loading');
+                                
+                 // Initiate Axios:
+                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: document.getElementById('wizardKey').value}});
+            
+                // Verify API Key
+                try {var supply = await rpc.post('/', {action: 'available_supply'});}
+                catch (error) {
+                    apiError(error.response.status);
+                    return false;
+                }
+                
+                // Next Step
+                data = {};
+                data.key = document.getElementById('wizardKey').value;
+                location.replace('#wizard-' + (document.getElementById('wizardType').value).toLowerCase());
+                document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
+            }
+            
+            // Wizard - Send
+            async function wizardSend() {
+                // Define Modal Controls and Start Spinny Thing
+                document.querySelector('#loading .modal-title').innerHTML = 'Loading:';
+                document.querySelector('#loading .content').innerHTML = '<div class="loading loading-lg"></div><br /><br /><p class="text-center">Verifying Input...</p>';
+                location.replace('#loading');
+                var modal = document.querySelector('#loading .text-center');
+                
+                // Verify Input
+                var account = document.getElementById('wizardSendAccount');
+                var destination = document.getElementById('wizardSendDestination');
+                var amount = document.getElementById('wizardSendAmount');
+                if ( NanoCurrency.checkAddress(account.value) && NanoCurrency.checkAddress(destination.value) && NanoCurrency.checkBalance(amount.value) ) {
+                    modal.innerHTML = 'Gathering Information...';
+                } else {
+                    error('Your account, destination account, or amount is invalid.');
+                    return false;
+                }
+                
+                // Initiate Axios:
+                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: data.key}});
+                
+                // Gather Account Data:
+                try {var info = await rpc.post('/', {action: 'account_info', account: account.value, count: 1});}
+                catch (error) {
+                    apiError(error.response.status);
+                    return false;
+                }
+                
+                // Grab Account Representative
+                modal.innerHTML = 'Getting Representative Information...';
+                try {var rep = await rpc.post('/', {action: 'account_representative', account: account.value});}
+                catch (error) {
+                    apiError(error.response.status);
+                    return false;
+                }
+                
+                // Generate Proof of Work
+                modal.innerHTML = 'Generating Proof of Work...';
+                try {var work = await rpc.post('/', {action: 'work_generate', hash: info.data.frontier});}
+                catch (error) {
+                    apiError(error.response.status);
+                    return false;
+                }
+                                
+                // Next Step
+                data.account = account.value;
+                data.previous = info.data.frontier;
+                data.representative = rep.data.representative;
+                data.link = NanoCurrency.derivePublicKey(destination.value);
+                data.work = work.data.work;
+                data.balance = add(info.data.balance.toString(), '-' + NanoCurrency.convert(amount.value.toString(), { from:'NANO', to:'raw' }));
+                document.querySelector('#wizard-process .content p code').innerHTML = NanoCurrency.hashStateBlock(data.account, data.previous, data.representative, data.balance, data.link);
+                location.replace('#wizard-process');
+                document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
+            }
+            
+            // Wizard - Receive
+            async function wizardReceive() {
+                // Define Modal Controls and Start Spinny Thing
+                document.querySelector('#loading .modal-title').innerHTML = 'Loading:';
+                document.querySelector('#loading .content').innerHTML = '<div class="loading loading-lg"></div><br /><br /><p class="text-center">Verifying Input...</p>';
+                location.replace('#loading');
+                var modal = document.querySelector('#loading .text-center');
+                
+                // Validate Input:
+                var hash = document.getElementById('wizardReceiveHash');
+                if ( NanoCurrency.checkHash(hash.value) ) {
+                    modal.innerHTML = 'Getting Block...';
+                } else {
+                    error('Hash is invalid.');
+                    return false;
+                }
+                
+                // Initiate Axios:
+                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: data.key}});
+                
+                // Grab Block Data and Amount
+                try {var block = await rpc.post('/', {action: 'blocks_info', hashes: [hash.value]});}
+                catch (error) {
+                    apiError(error.response.status);
+                    return false;
+                }
+                var amount = block.data.blocks[hash.value].amount;
+                block = JSON.parse(block.data.blocks[hash.value].contents);
+                if ( block.type == 'receive' || block.type == 'change' || block.type == 'open' ) { error('Hash is invalid.'); return false; }
+                if ( block.type == 'send' ) { block.link_as_account = block.destination; }
+                
+                // Gather Account Data:
+                modal.innerHTML = 'Getting Account Information...';
+                try {var info = await rpc.post('/', {action: 'account_info', account: block['link_as_account'], count: 1});}
+                catch (error) {
+                    apiError(error.response.status);
+                    return false;
+                }
+                
+                // Grab Account Representative
+                modal.innerHTML = 'Getting Representative Information...';
+                try {var rep = await rpc.post('/', {action: 'account_representative', account: block.link_as_account});}
+                catch (error) {
+                    apiError(error.response.status);
+                    return false;
+                }
+                
+                // Generate Proof of Work
+                modal.innerHTML = 'Generating Proof of Work...';
+                try {var work = await rpc.post('/', {action: 'work_generate', hash: info.data.frontier});}
+                catch (error) {
+                    apiError(error.response.status);
+                    return false;
+                }
+                
+                // Next Step
+                data.account = block['link_as_account'];
+                data.previous = info.data.frontier;
+                data.representative = rep.data.representative;
+                data.link = hash.value;
+                data.work = work.data.work;
+                data.balance = add(info.data.balance.toString(), amount);
+                console.log(data);
+                document.querySelector('#wizard-process .content p code').innerHTML = NanoCurrency.hashStateBlock(data.account, data.previous, data.representative, data.balance, data.link);
+                location.replace('#wizard-process');
+                document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
+            }
+            
+            // Wizard - Change
+            async function wizardChange() {
+                // Define Modal Controls and Start Spinny Thing
+                document.querySelector('#loading .modal-title').innerHTML = 'Loading:';
+                document.querySelector('#loading .content').innerHTML = '<div class="loading loading-lg"></div><br /><br /><p class="text-center">Verifying Input...</p>';
+                location.replace('#loading');
+                var modal = document.querySelector('#loading .text-center');
+                
+                // Verify Input
+                var account = document.getElementById('wizardChangeAccount');
+                var representative = document.getElementById('wizardChangeRepresentative');
+                if ( NanoCurrency.checkAddress(account.value) && NanoCurrency.checkAddress(representative.value) ) {
+                    modal.innerHTML = 'Gathering Information...';
+                } else {
+                    error('Your account or representative address is invalid.');
+                    return false;
+                }
+                
+                // Initiate Axios:
+                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: data.key}});
+                
+                // Gather Account Data:
+                modal.innerHTML = 'Getting Account Information...';
+                try {var info = await rpc.post('/', {action: 'account_info', account: account.value, count: 1});}
+                catch (error) {
+                    apiError(error.response.status);
+                    return false;
+                }
+                                
+                // Generate Proof of Work
+                modal.innerHTML = 'Generating Proof of Work...';
+                try {var work = await rpc.post('/', {action: 'work_generate', hash: info.data.frontier});}
+                catch (error) {
+                    apiError(error.response.status);
+                    return false;
+                }
+                                
+                // Next Step
+                data.account = account.value;
+                data.previous = info.data.previous;
+                data.representative = representative.value;
+                data.link = '0000000000000000000000000000000000000000000000000000000000000000';
+                data.work = work.data.work;
+                data.balance = info.data.balance.toString();
+                document.querySelector('#wizard-process .content p code').innerHTML = NanoCurrency.hashStateBlock(data.account, data.previous, data.representative, data.balance, data.link);
+                location.replace('#wizard-process');
+                document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
+            }
+            
+            // Wizard - Open
+            async function wizardOpen() {
+                // Define Modal Controls and Start Spinny Thing
+                document.querySelector('#loading .modal-title').innerHTML = 'Loading:';
+                document.querySelector('#loading .content').innerHTML = '<div class="loading loading-lg"></div><br /><br /><p class="text-center">Verifying Input...</p>';
+                location.replace('#loading');
+                var modal = document.querySelector('#loading .text-center');
+                
+                // Verify Input
+                var hash = document.getElementById('wizardOpenHash');
+                var representative = document.getElementById('wizardOpenRepresentative');
+                if ( NanoCurrency.checkHash(hash.value) && NanoCurrency.checkAddress(representative.value) ) {
+                    modal.innerHTML = 'Gathering Information...';
+                } else {
+                    error('Your account or representative address is invalid.');
+                    return false;
+                }
+                
+                // Initiate Axios:
+                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: data.key}});
+                                
+                // Grab Block Data and Amount
+                modal.innerHTML = 'Getting Block Information...';
+                try {var block = await rpc.post('/', {action: 'blocks_info', hashes: [hash.value]});}
+                catch (error) {
+                    apiError(error.response.status);
+                    return false;
+                }
+                var amount = block.data.blocks[hash.value].amount;
+                block = JSON.parse(block.data.blocks[hash.value].contents);
+                if ( block.type == 'receive' || block.type == 'change' || block.type == 'open' ) { error('Hash is invalid.'); return false; }
+                if ( block.type == 'send' ) { block.link_as_account = block.destination; }
+                                
+                // Next Step
+                data.account = block['link_as_account'];
+                data.previous = '0';
+                data.representative = representative.value;
+                data.link = hash.value;
+                data.work = '0000000000000000';
+                data.balance = amount;
+                document.querySelector('#wizard-process .content p code').innerHTML = NanoCurrency.hashStateBlock(data.account, data.previous, data.representative, data.balance, data.link);
+                location.replace('#wizard-process');
+                document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
+            }
+            
+            // Wizard - Process
+            async function wizardProcess() {
+                // Define Modal Controls and Start Spinny Thing
+                document.querySelector('#loading .modal-title').innerHTML = 'Loading:';
+                document.querySelector('#loading .content').innerHTML = '<div class="loading loading-lg"></div><br /><br /><p class="text-center">Verifying Input...</p>';
+                location.replace('#loading');
+                var modal = document.querySelector('#loading .text-center');
+                
+                // Verify Input
+                var signature = document.getElementById('wizardProcessSignature');
+                if ( NanoCurrency.checkSignature(signature.value) ) {
+                    modal.innerHTML = 'Processing Block...';
+                } else {
+                    error('Your signature is invalid.');
+                    return false;
+                }
+                
+                // Generate Block
+                var block = {
+                    'type': 'state',
+                    'account': data.account,
+                    'previous': data.previous,
+                    'representative': data.representative,
+                    'balance': data.balance,
+                    'link': data.link,
+                    'signature': signature.value,
+                    'work': data.work
+                };
+                
+                // Initiate Axios:
+                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: data.key}});
+                                
+                // Process Block
+                try {var hash = await rpc.post('/', {action: 'process', block: JSON.stringify(block)});}
+                catch (error) {
+                    apiError(error.response.status);
+                    return false;
+                }
+                                
+                // Next Step
+                document.querySelector('#wizard-result .content p').innerHTML = 'Your hash is: <code>' + hash.data.hash + '</code>';
+                location.replace('#wizard-result');
+                document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
+            }
+            
+            // Wizard - Sign
+            async function wizardSign() {
+                // Define Modal Controls and Start Spinny Thing
+                document.querySelector('#loading .modal-title').innerHTML = 'Loading:';
+                document.querySelector('#loading .content').innerHTML = '<div class="loading loading-lg"></div><br /><br /><p class="text-center">Verifying Input...</p>';
+                location.replace('#loading');
+                var modal = document.querySelector('#loading .text-center');
+                
+                // Verify Input
+                var private = document.getElementById('wizardSignPrivateKey');
+                var hash = document.getElementById('wizardSignHash');
+                if ( NanoCurrency.checkHash(hash.value) && NanoCurrency.checkKey(private.value) ) {
+                    modal.innerHTML = 'Signing Hash...';
+                } else {
+                    error('Your hash or private key is invalid.');
+                    return false;
+                }
+                                
+                // Next Step
+                document.querySelector('#result .content p').innerHTML = 'Your signature is: <code>' + NanoCurrency.signBlock(hash.value, private.value) + '</code>.';
+                location.replace('#result');
+                document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
+            }
+        </script>
+    </body>
+</html>
