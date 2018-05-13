@@ -2,9 +2,11 @@
 A cold wallet for Nano.
 
 ## To-Do
-  1. ``0/5`` Transfer instructions and text over to new UI.
-  2. ``4/5`` Add client side validation.
-  3. ``3/5`` Create Wizard.
+  - ``4/5`` Create Wizard.
+    - Link to Send somehow and test wallet.
+  - ``0/5`` Transfer instructions and text over to new UI.
+  - ``0/5`` Add Tools.
+  - ``0/5`` Create downloadable version.
 
 ## Wizard
 
