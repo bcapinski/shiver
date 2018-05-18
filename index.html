@@ -169,7 +169,7 @@
                         <li class="menu-item"><a href="#online">Online Tools</a></li>
                         <li class="menu-item"><a href="#offline">Offline Tools</a></li>
                         <li class="divider"></li>
-                        <li class="menu-item"><a href="#tools-sign">Sign</a></li>
+                        <li class="menu-item"><a href="#wizard-sign">Wizard Sign</a></li>
                     </ul>
                 </div>
                 <a href="download.html" class="btn btn-primary hide-xs ml-1" download>Download</a>
@@ -303,15 +303,6 @@
                 <div class="modal-body">
                     <div class="content">
                         <form class="form-horizontal">
-                            
-                            <div class="form-group">
-                                <div class="col-3 col-sm-12">
-                                    <label class="form-label">Nanode API Key:</label>
-                                </div>
-                                <div class="col-7 col-sm-12">
-                                    <input class="form-input" type="text" id="wizardKey" />
-                                </div>
-                            </div>
                             
                             <div class="form-group">
                                 <div class="col-3 col-sm-12">
@@ -571,7 +562,7 @@
         
         <!--MODAL: Result -->
         <div class="modal modal-lg" id="result">
-            <a href="#close" class="modal-overlay"></a>
+            <a href="#result" class="modal-overlay"></a>
             <div class="modal-container">
                 <div class="modal-header">
                     <a href="#close" class="btn btn-clear float-right"></a>
@@ -592,29 +583,31 @@
         <script src="https://unpkg.com/nanocurrency@latest/dist/nanocurrency.umd.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script>
-            // Varible Definitions
+            // Init
             var data = new Object();
-            
-            // Nanode API Error Helpers
-            var apiErrors = {
-                400: 'Error 400: Contact me with instructions to replicate.',
-                401: 'Error 401: Invalid API key.',
-                402: 'Error 402: Insufficient Nanode account balance.',
-                403: 'Error 403: Contact me with instructions to replicate.',
-                500: 'Error 500: Contact me with instructions to replicate.',
-                503: 'Error 400: Try again, then contact me with instructions to replicate.'
-            };
-            
+            var rpc = axios.create({baseURL: 'https://test.getcanoe.io/rpc', headers: {'Content-Type': 'text/plain'}});
+                        
             // Error Handling
             function error(err) {
                 document.querySelector('#result .content p').innerHTML = '<h5 class="text-error">Error:</h5><div class="toast toast-error">' + err +'</div>';
                 location.replace('#result');
                 document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
             }
-            function apiError(err) {
-                document.querySelector('#result .content p').innerHTML = '<h5 class="text-error">Error:</h5><div class="toast toast-error">' + apiErrors[err] + '</div>';
-                location.replace('#result');
-                document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
+            
+            // Send API Request
+            async function post(x) {
+                if (navigator.onLine) {
+                    var y = await rpc.post('/', x);
+                    if ('error' in y.data) {
+                        error('RPC Error: ' + y.data.error);
+                        return ('false');
+                    } else {
+                        return (y);
+                    }
+                } else {
+                    error('Your computer is offline.');
+                    return ('false');
+                }
             }
             
             // Add Values. Use Negative Numbers for Subtracting.
@@ -648,22 +641,15 @@
             async function wizardStart() {
                 // Start Spinny Thing
                 document.querySelector('#loading .modal-title').innerHTML = 'Loading:';
-                document.querySelector('#loading .content').innerHTML = '<div class="loading loading-lg"></div><br /><br /><p class="text-center">Verifying API Key...</p>';
+                document.querySelector('#loading .content').innerHTML = '<div class="loading loading-lg"></div><br /><br /><p class="text-center">Testing connection...</p>';
                 location.replace('#loading');
-                                
-                 // Initiate Axios:
-                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: document.getElementById('wizardKey').value}});
             
                 // Verify API Key
-                try {var supply = await rpc.post('/', {action: 'available_supply'});}
-                catch (error) {
-                    apiError(error.response.status);
-                    return false;
-                }
+                var res = await post({'action':'available_supply'});
+                if (res == 'false') {return false;}
                 
                 // Next Step
                 data = {};
-                data.key = document.getElementById('wizardKey').value;
                 location.replace('#wizard-' + (document.getElementById('wizardType').value).toLowerCase());
                 document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
             }
@@ -680,43 +666,26 @@
                 var account = document.getElementById('wizardSendAccount');
                 var destination = document.getElementById('wizardSendDestination');
                 var amount = document.getElementById('wizardSendAmount');
-                if ( NanoCurrency.checkAddress(account.value) && NanoCurrency.checkAddress(destination.value) && NanoCurrency.checkBalance(amount.value) ) {
+                if ( NanoCurrency.checkAddress(account.value) && NanoCurrency.checkAddress(destination.value) && NanoCurrency.checkBalance(NanoCurrency.convert(amount.value.toString(), { from:'NANO', to:'raw' })) ) {
                     modal.innerHTML = 'Gathering Information...';
                 } else {
                     error('Your account, destination account, or amount is invalid.');
                     return false;
                 }
-                
-                // Initiate Axios:
-                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: data.key}});
-                
+                                
                 // Gather Account Data:
-                try {var info = await rpc.post('/', {action: 'account_info', account: account.value, count: 1});}
-                catch (error) {
-                    apiError(error.response.status);
-                    return false;
-                }
-                
-                // Grab Account Representative
-                modal.innerHTML = 'Getting Representative Information...';
-                try {var rep = await rpc.post('/', {action: 'account_representative', account: account.value});}
-                catch (error) {
-                    apiError(error.response.status);
-                    return false;
-                }
+                var info = await post({action: 'account_info', account: account.value, representative: true});
+                if (info == 'false') {return false;}
                 
                 // Generate Proof of Work
                 modal.innerHTML = 'Generating Proof of Work...';
-                try {var work = await rpc.post('/', {action: 'work_generate', hash: info.data.frontier});}
-                catch (error) {
-                    apiError(error.response.status);
-                    return false;
-                }
+                var work = await post({action: 'work_generate', hash: info.data.frontier});
+                if (work == 'false') {return false;}
                                 
                 // Next Step
                 data.account = account.value;
                 data.previous = info.data.frontier;
-                data.representative = rep.data.representative;
+                data.representative = info.data.representative;
                 data.link = NanoCurrency.derivePublicKey(destination.value);
                 data.work = work.data.work;
                 data.balance = add(info.data.balance.toString(), '-' + NanoCurrency.convert(amount.value.toString(), { from:'NANO', to:'raw' }));
@@ -741,16 +710,10 @@
                     error('Hash is invalid.');
                     return false;
                 }
-                
-                // Initiate Axios:
-                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: data.key}});
-                
+                                
                 // Grab Block Data and Amount
-                try {var block = await rpc.post('/', {action: 'blocks_info', hashes: [hash.value]});}
-                catch (error) {
-                    apiError(error.response.status);
-                    return false;
-                }
+                var block = await post({action: 'blocks_info', hashes: [hash.value]});
+                if (block == 'false') {return false;}
                 var amount = block.data.blocks[hash.value].amount;
                 block = JSON.parse(block.data.blocks[hash.value].contents);
                 if ( block.type == 'receive' || block.type == 'change' || block.type == 'open' ) { error('Hash is invalid.'); return false; }
@@ -758,32 +721,18 @@
                 
                 // Gather Account Data:
                 modal.innerHTML = 'Getting Account Information...';
-                try {var info = await rpc.post('/', {action: 'account_info', account: block['link_as_account'], count: 1});}
-                catch (error) {
-                    apiError(error.response.status);
-                    return false;
-                }
-                
-                // Grab Account Representative
-                modal.innerHTML = 'Getting Representative Information...';
-                try {var rep = await rpc.post('/', {action: 'account_representative', account: block.link_as_account});}
-                catch (error) {
-                    apiError(error.response.status);
-                    return false;
-                }
+                var info = await post({action: 'account_info', account: block['link_as_account'], representative: true});
+                if (info == 'false') {return false;}
                 
                 // Generate Proof of Work
                 modal.innerHTML = 'Generating Proof of Work...';
-                try {var work = await rpc.post('/', {action: 'work_generate', hash: info.data.frontier});}
-                catch (error) {
-                    apiError(error.response.status);
-                    return false;
-                }
+                var work = await post({action: 'work_generate', hash: info.data.frontier});
+                if (work == 'false') {return false;}
                 
                 // Next Step
                 data.account = block['link_as_account'];
                 data.previous = info.data.frontier;
-                data.representative = rep.data.representative;
+                data.representative = info.data.representative;
                 data.link = hash.value;
                 data.work = work.data.work;
                 data.balance = add(info.data.balance.toString(), amount);
@@ -811,28 +760,19 @@
                     return false;
                 }
                 
-                // Initiate Axios:
-                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: data.key}});
-                
                 // Gather Account Data:
                 modal.innerHTML = 'Getting Account Information...';
-                try {var info = await rpc.post('/', {action: 'account_info', account: account.value, count: 1});}
-                catch (error) {
-                    apiError(error.response.status);
-                    return false;
-                }
+                var info = await post({action: 'account_info', account: account.value, representative: true});
+                if (info == 'false') {return false;}
                                 
                 // Generate Proof of Work
                 modal.innerHTML = 'Generating Proof of Work...';
-                try {var work = await rpc.post('/', {action: 'work_generate', hash: info.data.frontier});}
-                catch (error) {
-                    apiError(error.response.status);
-                    return false;
-                }
-                                
+                var work = await post({action: 'work_generate', hash: info.data.frontier});
+                if (work == 'false') {return false;}
+                
                 // Next Step
                 data.account = account.value;
-                data.previous = info.data.previous;
+                data.previous = info.data.frontier;
                 data.representative = representative.value;
                 data.link = '0000000000000000000000000000000000000000000000000000000000000000';
                 data.work = work.data.work;
@@ -854,33 +794,31 @@
                 var hash = document.getElementById('wizardOpenHash');
                 var representative = document.getElementById('wizardOpenRepresentative');
                 if ( NanoCurrency.checkHash(hash.value) && NanoCurrency.checkAddress(representative.value) ) {
-                    modal.innerHTML = 'Gathering Information...';
+                    modal.innerHTML = 'Getting Block Information...';
                 } else {
                     error('Your account or representative address is invalid.');
                     return false;
                 }
-                
-                // Initiate Axios:
-                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: data.key}});
-                                
+                                                
                 // Grab Block Data and Amount
-                modal.innerHTML = 'Getting Block Information...';
-                try {var block = await rpc.post('/', {action: 'blocks_info', hashes: [hash.value]});}
-                catch (error) {
-                    apiError(error.response.status);
-                    return false;
-                }
+                var block = await post({action: 'blocks_info', hashes: [hash.value]});
+                if (block == 'false') {return false;}
                 var amount = block.data.blocks[hash.value].amount;
                 block = JSON.parse(block.data.blocks[hash.value].contents);
                 if ( block.type == 'receive' || block.type == 'change' || block.type == 'open' ) { error('Hash is invalid.'); return false; }
                 if ( block.type == 'send' ) { block.link_as_account = block.destination; }
+                
+                // Generate Proof of Work
+                modal.innerHTML = 'Generating Proof of Work...';
+                var work = await post({action: 'work_generate', hash: NanoCurrency.derivePublicKey(block['link_as_account'])});
+                if (work == 'false') {return false;}
                                 
                 // Next Step
                 data.account = block['link_as_account'];
-                data.previous = '0';
+                data.previous = '0000000000000000000000000000000000000000000000000000000000000000';
                 data.representative = representative.value;
                 data.link = hash.value;
-                data.work = '0000000000000000';
+                data.work = work.data.work;
                 data.balance = amount;
                 document.querySelector('#wizard-process .content p code').innerHTML = NanoCurrency.hashStateBlock(data.account, data.previous, data.representative, data.balance, data.link);
                 location.replace('#wizard-process');
@@ -915,20 +853,14 @@
                     'signature': signature.value,
                     'work': data.work
                 };
-                
-                // Initiate Axios:
-                var rpc = axios.create({baseURL: 'https://api.nanode.co', headers: {Authorization: data.key}});
-                                
+                                                
                 // Process Block
-                try {var hash = await rpc.post('/', {action: 'process', block: JSON.stringify(block)});}
-                catch (error) {
-                    apiError(error.response.status);
-                    return false;
-                }
+                var hash = await post({action: 'process', block: JSON.stringify(block)});
+                if (hash == 'false') {return false;}
                                 
                 // Next Step
-                document.querySelector('#wizard-result .content p').innerHTML = 'Your hash is: <code>' + hash.data.hash + '</code>';
-                location.replace('#wizard-result');
+                document.querySelector('#result .content p').innerHTML = 'Your hash is: <code>' + hash.data.hash + '</code>';
+                location.replace('#result');
                 document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
             }
             
