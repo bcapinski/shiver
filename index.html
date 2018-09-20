@@ -579,9 +579,41 @@
             </div>
         </div>
         
+        <!--MODAL: Generate QR Code -->
+        <div class="modal" id="qr">
+            <a href="#qr-generate" class="modal-overlay"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right"></a>
+                    <div class="modal-title h3">Generated QR Code:</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <form class="form-horizontal">
+                            
+                            <div class="form-group">
+                                <div class="col-3 col-sm-12">
+                                    <label class="form-label">Private Key:</label>
+                                </div>
+                                <div class="col-7 col-sm-12">
+                                    <input class="form-input" type="text" id="wizardSignPrivateKey" />
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="wizardSign()">Sign</button>
+                </div>
+            </div>
+        </div>
+        
         <!--JavaScript at end of body for optimized loading-->
         <script src="https://unpkg.com/nanocurrency@latest/dist/nanocurrency.umd.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://rawgit.com/davidshimjs/qrcodejs/master/qrcode.min.js"></script>
+        <script src="https://rawgit.com/cozmo/jsQR/master/dist/jsQR.js"></script>
         <script>
             // Init
             var data = new Object();
@@ -634,8 +666,7 @@
                 return 0 === arguments.length ? "0" : [].reduce.call(arguments, function(a, b) {
                     return e(a, b);
                 }, "0");
-            };
-            
+            };            
             
             // Wizard - Start
             async function wizardStart() {
@@ -689,7 +720,8 @@
                 data.link = NanoCurrency.derivePublicKey(destination.value);
                 data.work = work.data.work;
                 data.balance = add(info.data.balance.toString(), '-' + NanoCurrency.convert(amount.value.toString(), { from:'NANO', to:'raw' }));
-                document.querySelector('#wizard-process .content p code').innerHTML = NanoCurrency.hashStateBlock(data.account, data.previous, data.representative, data.balance, data.link);
+                data.hash = NanoCurrency.hashStateBlock(data.account, data.previous, data.representative, data.balance, data.link);
+                document.querySelector('#wizard-process .content p code').innerHTML = data.hash;
                 location.replace('#wizard-process');
                 document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
             }
@@ -737,7 +769,8 @@
                 data.work = work.data.work;
                 data.balance = add(info.data.balance.toString(), amount);
                 console.log(data);
-                document.querySelector('#wizard-process .content p code').innerHTML = NanoCurrency.hashStateBlock(data.account, data.previous, data.representative, data.balance, data.link);
+                data.hash = NanoCurrency.hashStateBlock(data.account, data.previous, data.representative, data.balance, data.link);
+                document.querySelector('#wizard-process .content p code').innerHTML = data.hash;
                 location.replace('#wizard-process');
                 document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
             }
@@ -777,7 +810,8 @@
                 data.link = '0000000000000000000000000000000000000000000000000000000000000000';
                 data.work = work.data.work;
                 data.balance = info.data.balance.toString();
-                document.querySelector('#wizard-process .content p code').innerHTML = NanoCurrency.hashStateBlock(data.account, data.previous, data.representative, data.balance, data.link);
+                data.hash = NanoCurrency.hashStateBlock(data.account, data.previous, data.representative, data.balance, data.link);
+                document.querySelector('#wizard-process .content p code').innerHTML = data.hash;
                 location.replace('#wizard-process');
                 document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
             }
@@ -820,7 +854,8 @@
                 data.link = hash.value;
                 data.work = work.data.work;
                 data.balance = amount;
-                document.querySelector('#wizard-process .content p code').innerHTML = NanoCurrency.hashStateBlock(data.account, data.previous, data.representative, data.balance, data.link);
+                data.hash = NanoCurrency.hashStateBlock(data.account, data.previous, data.representative, data.balance, data.link);
+                document.querySelector('#wizard-process .content p code').innerHTML = data.hash;
                 location.replace('#wizard-process');
                 document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
             }
@@ -886,6 +921,10 @@
                 document.querySelector('#result .content p').innerHTML = 'Your signature is: <code>' + NanoCurrency.signBlock(hash.value, private.value) + '</code>.';
                 location.replace('#result');
                 document.querySelector('#loading .content').innerHTML = '<p>Session Expired.</p>';
+            }
+            
+            async function wizardRead () {
+                
             }
         </script>
     </body>
